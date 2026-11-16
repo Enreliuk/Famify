@@ -1,0 +1,218 @@
+.estrutura {
+  height: 100dvh;
+  background-color: #11141a;
+}
+
+/* Menu Lateral (Sidebar) - Estilo Steam Dark */
+.menu-lateral {
+  width: 256px;
+  background: #171a21;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  color: #ffffff;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 20px 38px;
+}
+
+.marca-simbolo {
+  background: linear-gradient(135deg, #1a9fff 0%, #0077cc 100%);
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 12px 10px;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(26, 159, 255, 0.25);
+}
+
+.marca strong {
+  font-size: 16px;
+  display: block;
+  letter-spacing: 0.5px;
+}
+
+.marca small {
+  display: block;
+  color: #8f98a0;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.rotulo-menu {
+  padding: 0 24px 12px;
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  color: #66c0f4;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+mat-nav-list {
+  padding: 0 12px;
+}
+
+a[mat-list-item] {
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  --mat-list-list-item-label-text-color: #c7d5e0;
+  --mat-list-list-item-hover-label-text-color: #ffffff;
+  --mat-list-list-item-focus-label-text-color: #ffffff;
+  --mat-list-list-item-hover-state-layer-color: rgba(255, 255, 255, 0.06);
+}
+
+a.item-ativo {
+  background: #1b2838;
+  border-left: 3px solid #1a9fff;
+  --mat-list-list-item-label-text-color: #ffffff;
+}
+
+.numero-menu {
+  margin-right: 14px;
+  font-size: 11px;
+  color: #66c0f4;
+  opacity: 0.85;
+}
+
+.rodape-menu {
+  margin: 46px 24px 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  line-height: 1.8;
+  color: #c7d5e0;
+}
+
+.rodape-menu span {
+  color: #8f98a0;
+  font-size: 11px;
+}
+
+/* Área Principal */
+.area-principal {
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at top center, #1b2838 0%, #11141a 55%);
+  color: #ffffff;
+}
+
+/* Barra Superior (Topbar) */
+.topo {
+  flex-shrink: 0;
+  background: rgba(23, 26, 33, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 76px;
+  gap: 12px;
+  padding: 0 28px;
+  color: #ffffff;
+}
+
+.titulo-topo {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.espacador {
+  flex: 1;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  background: #1b2838;
+  color: #66c0f4;
+  border: 1px solid rgba(102, 192, 244, 0.3);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.usuario-texto strong,
+.usuario-texto small {
+  display: block;
+  line-height: 1.5;
+}
+
+.usuario-texto strong {
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.usuario-texto small {
+  font-size: 10px;
+  color: #8f98a0;
+  font-weight: 400;
+}
+
+/* Container onde o <router-outlet> renderiza o inicio.component */
+.conteudo {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  padding: 40px 36px;
+  margin: 0 auto;
+}
+
+/* Rodapé */
+.rodape {
+  padding: 18px 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #171a21;
+  font-size: 11px;
+  color: #8f98a0;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Acessibilidade */
+.pular-conteudo {
+  position: fixed;
+  left: 12px;
+  top: -100px;
+  z-index: 1000;
+  background: #1a9fff;
+  color: #ffffff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px;
+}
+
+.pular-conteudo:focus {
+  top: 12px;
+}
+
+@media (max-width: 767px) {
+  .topo {
+    padding: 0 12px;
+    height: 68px;
+  }
+  .usuario-texto {
+    display: none;
+  }
+  .titulo-topo {
+    font-size: 14px;
+  }
+  .conteudo {
+    padding: 28px 20px;
+  }
+  .rodape {
+    padding: 18px 20px;
+    flex-wrap: wrap;
+  }
+}
