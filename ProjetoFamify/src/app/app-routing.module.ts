@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'inicio', loadChildren: () => import('./pages/inicio/inicio.module').then(m => m.InicioModule), data: { titulo: 'Início' } },
-  { path: 'projetos', loadChildren: () => import('./pages/projetos/projetos.module').then(m => m.ProjetosModule), data: { titulo: 'Projetos' } },
+  { path: 'match', loadChildren: () => import('./pages/match/match.module').then(m => m.MatchModule), data: { titulo: 'Match' } },
   { path: '**', redirectTo: 'inicio' }
 ];
 @NgModule({ imports: [RouterModule.forRoot(routes)], exports: [RouterModule] })

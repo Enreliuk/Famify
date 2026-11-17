@@ -1,16 +1,16 @@
 import {
-  BreakpointObserver
-} from "./chunk-RPF6UP6U.js";
-import {
   coerceElement,
   coerceNumberProperty
 } from "./chunk-VNBHVFUA.js";
 import {
-  BidiModule
-} from "./chunk-UUSOUDZU.js";
+  BreakpointObserver
+} from "./chunk-RPF6UP6U.js";
 import {
   Platform
 } from "./chunk-T3HAY2SG.js";
+import {
+  BidiModule
+} from "./chunk-UUSOUDZU.js";
 import {
   APP_ID,
   ApplicationRef,
@@ -2994,4 +2994,4 @@ export {
   FocusKeyManager,
   MatCommonModule
 };
-//# sourceMappingURL=chunk-FGPFHPKK.js.map
+//# sourceMappingURL=chunk-YEI42LA7.js.map

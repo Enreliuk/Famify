@@ -1,0 +1,138 @@
+<div class="match-page">
+  <!-- Cabeçalho e Busca -->
+  <header class="match-header">
+    <div class="header-text">
+      <span class="tag-algoritmo">Algoritmo de MatchMaking Ativo</span>
+      <h1>Grupos Familiares Disponíveis</h1>
+      <p>
+        Conexões filtradas por afinidade de biblioteca e títulos pagos. Limite
+        oficial de até 6 membros por família Steam.
+      </p>
+    </div>
+
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        [(ngModel)]="termoFiltro"
+        placeholder="Filtrar por jogo (ex: Elden Ring) ou nome da família..."
+      />
+      <button
+        *ngIf="termoFiltro"
+        type="button"
+        class="btn-limpar"
+        (click)="termoFiltro = ''"
+      >
+        ✕
+      </button>
+    </div>
+  </header>
+
+  <!-- Filtros de Afinidade (Genre tags - Slide 10) -->
+  <section class="filters-section" aria-label="Filtros por gênero">
+    <span class="filter-label">Filtros de Afinidade:</span>
+    <div class="genre-tags">
+      <button
+        type="button"
+        class="genre-pill"
+        *ngFor="let genero of generosDisponiveis"
+        [class.ativa]="generoSelecionado === genero"
+        (click)="selecionarGenero(genero)"
+      >
+        {{ genero }}
+      </button>
+    </div>
+  </section>
+
+  <!-- Grade de Grupos e Match -->
+  <section class="families-grid" *ngIf="familiasFiltradas.length > 0; else semResultados">
+    <article class="family-card" *ngFor="let familia of familiasFiltradas">
+      <!-- Topo do Card: Nome + Badge de Vagas -->
+      <div class="card-top">
+        <div>
+          <h2>{{ familia.nome }}</h2>
+          <p class="family-desc">{{ familia.descricao }}</p>
+        </div>
+
+        <span
+          class="vagas-badge"
+          [class.ultima-vaga]="familia.vagasDisponiveis === 1"
+        >
+          {{
+            familia.vagasDisponiveis === 1
+              ? 'Última vaga'
+              : familia.vagasDisponiveis + ' vagas'
+          }}
+        </span>
+      </div>
+
+      <!-- Membros Atuais e Contador (ex: 3/5, 4/6) -->
+      <div class="members-row">
+        <div class="avatars-group">
+          <span
+            class="member-avatar"
+            *ngFor="let sigla of familia.avataresMembros"
+          >
+            {{ sigla }}
+          </span>
+          <span class="member-avatar vaga-livre" title="Vaga disponível">+</span>
+        </div>
+
+        <span class="members-count">
+          👤 {{ familia.membrosAtuais }}/{{ familia.limiteMembros }}
+        </span>
+      </div>
+
+      <!-- Barra de Ocupação + Total de Biblioteca -->
+      <div class="library-stats">
+        <div class="progress-track">
+          <div
+            class="progress-fill"
+            [style.width.%]="calcularPorcentagemOcupacao(familia)"
+          ></div>
+        </div>
+
+        <div class="stats-labels">
+          <span>Total de biblioteca</span>
+          <strong>{{ familia.totalJogos }} jogos</strong>
+        </div>
+      </div>
+
+      <!-- Match Visual: Miniaturas dos Títulos AAA -->
+      <div class="aaa-showcase">
+        <div
+          class="aaa-thumb"
+          *ngFor="let jogo of familia.jogosDestaque"
+          [title]="jogo.titulo"
+        >
+          <img [src]="jogo.capaUrl" [alt]="jogo.titulo" />
+        </div>
+      </div>
+
+      <!-- Ação: Solicitar Entrada -->
+      <button
+        type="button"
+        class="btn-solicitar"
+        [class.solicitado]="familia.solicitado"
+        (click)="solicitarEntrada(familia)"
+      >
+        {{ familia.solicitado ? '✓ Solicitação enviada' : 'Solicitar entrada' }}
+      </button>
+    </article>
+  </section>
+
+  <!-- Estado Vazio -->
+  <ng-template #semResultados>
+    <div class="empty-state">
+      <h3>Nenhuma família compatível encontrada</h3>
+      <p>Tente remover os filtros de gênero ou pesquisar por outro título.</p>
+      <button
+        type="button"
+        class="btn-reset"
+        (click)="generoSelecionado = 'Todos'; termoFiltro = ''"
+      >
+        Limpar filtros
+      </button>
+    </div>
+  </ng-template>
+</div>

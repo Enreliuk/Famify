@@ -1,94 +1,6 @@
 .estrutura {
-  height: 100dvh;
+  min-height: 100dvh;
   background-color: #11141a;
-}
-
-/* Menu Lateral (Sidebar) - Estilo Steam Dark */
-.menu-lateral {
-  width: 256px;
-  background: #171a21;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 0;
-  color: #ffffff;
-}
-
-.marca {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 30px 20px 38px;
-}
-
-.marca-simbolo {
-  background: linear-gradient(135deg, #1a9fff 0%, #0077cc 100%);
-  color: #ffffff;
-  border-radius: 12px;
-  padding: 12px 10px;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(26, 159, 255, 0.25);
-}
-
-.marca strong {
-  font-size: 16px;
-  display: block;
-  letter-spacing: 0.5px;
-}
-
-.marca small {
-  display: block;
-  color: #8f98a0;
-  margin-top: 4px;
-  font-size: 12px;
-}
-
-.rotulo-menu {
-  padding: 0 24px 12px;
-  font-size: 10px;
-  letter-spacing: 1.8px;
-  color: #66c0f4;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-mat-nav-list {
-  padding: 0 12px;
-}
-
-a[mat-list-item] {
-  margin-bottom: 8px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-  --mat-list-list-item-label-text-color: #c7d5e0;
-  --mat-list-list-item-hover-label-text-color: #ffffff;
-  --mat-list-list-item-focus-label-text-color: #ffffff;
-  --mat-list-list-item-hover-state-layer-color: rgba(255, 255, 255, 0.06);
-}
-
-a.item-ativo {
-  background: #1b2838;
-  border-left: 3px solid #1a9fff;
-  --mat-list-list-item-label-text-color: #ffffff;
-}
-
-.numero-menu {
-  margin-right: 14px;
-  font-size: 11px;
-  color: #66c0f4;
-  opacity: 0.85;
-}
-
-.rodape-menu {
-  margin: 46px 24px 24px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 12px;
-  line-height: 1.8;
-  color: #c7d5e0;
-}
-
-.rodape-menu span {
-  color: #8f98a0;
-  font-size: 11px;
 }
 
 /* Área Principal */
@@ -99,7 +11,7 @@ a.item-ativo {
   color: #ffffff;
 }
 
-/* Barra Superior Mesclada (Estilo Famify + Usuário Ativo) */
+/* Barra Superior (Topbar) */
 .topo {
   flex-shrink: 0;
   display: flex;
@@ -109,7 +21,7 @@ a.item-ativo {
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   height: 76px;
-  padding: 0 28px;
+  padding: 0 36px;
   color: #ffffff;
 }
 
@@ -117,14 +29,6 @@ a.item-ativo {
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.btn-menu-lateral {
-  color: #c7d5e0;
-}
-
-.btn-menu-lateral:hover {
-  color: #ffffff;
 }
 
 .logo {
@@ -150,12 +54,21 @@ a.item-ativo {
   gap: 28px;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-item-estatico {
   color: #8f98a0;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
   transition: color 0.2s;
+}
+
+.nav-links a {
+  cursor: pointer;
+}
+
+.nav-item-estatico {
+  cursor: default;
 }
 
 .nav-links a:hover,
@@ -184,6 +97,23 @@ a.item-ativo {
 
 .btn-steam:hover {
   filter: brightness(1.15);
+}
+
+.btn-sair {
+  background: transparent;
+  color: #8f98a0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.btn-sair:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .divisor-vertical {
@@ -237,14 +167,14 @@ a.item-ativo {
   font-weight: 400;
 }
 
-/* Container onde o <router-outlet> renderiza o inicio.component */
+/* Container onde o <router-outlet> renderiza as páginas */
 .conteudo {
   flex: 1;
   width: 100%;
-  max-width: 1200px;
+  max-width: 100%;
   box-sizing: border-box;
-  padding: 40px 36px;
-  margin: 0 auto;
+  padding: 0;
+  margin: 0;
 }
 
 /* Rodapé */
@@ -277,33 +207,19 @@ a.item-ativo {
   top: 12px;
 }
 
-.btn-sair {
-  background: transparent;
-  color: #8f98a0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.btn-sair:hover {
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
 /* Responsividade */
 @media (max-width: 960px) {
   .nav-links {
+    gap: 16px;
+  }
+  .nav-item-estatico {
     display: none;
   }
 }
 
 @media (max-width: 767px) {
   .topo {
-    padding: 0 14px;
+    padding: 0 16px;
     height: 68px;
   }
   .usuario-texto,
@@ -313,5 +229,9 @@ a.item-ativo {
   .btn-steam {
     padding: 7px 10px;
     font-size: 12px;
+  }
+  .rodape {
+    padding: 18px 20px;
+    flex-wrap: wrap;
   }
 }
