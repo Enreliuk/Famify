@@ -6,11 +6,11 @@ import {
   coerceNumberProperty
 } from "./chunk-VNBHVFUA.js";
 import {
-  Platform
-} from "./chunk-T3HAY2SG.js";
-import {
   BidiModule
 } from "./chunk-UUSOUDZU.js";
+import {
+  Platform
+} from "./chunk-T3HAY2SG.js";
 import {
   APP_ID,
   ApplicationRef,
@@ -2994,4 +2994,4 @@ export {
   FocusKeyManager,
   MatCommonModule
 };
-//# sourceMappingURL=chunk-QTZRDHEM.js.map
+//# sourceMappingURL=chunk-FGPFHPKK.js.map

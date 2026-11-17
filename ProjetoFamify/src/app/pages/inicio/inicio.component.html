@@ -1,27 +1,4 @@
 <div class="famify-home">
-  <!-- Barra de Navegação Superior -->
-  <header class="navbar">
-    <div class="logo">
-      <i class="fab fa-steam"></i>
-      <span>FAMIFY</span>
-    </div>
-
-    <nav class="nav-links">
-      <a routerLink="/grupos">Encontrar Família</a>
-      <a routerLink="/como-funciona">Como Funciona</a>
-      <a routerLink="/regras">Regras Steam</a>
-      <a routerLink="/ajuda">Ajuda</a>
-    </nav>
-
-    <div class="nav-actions">
-      <button class="btn-login" routerLink="/login">Login</button>
-      <button class="btn-steam" routerLink="/conectar-steam">
-        Conectar Steam
-      </button>
-    </div>
-  </header>
-
-  <!-- Seção Principal (Hero Section) -->
   <main class="hero-section">
     <div class="hero-content">
       <h1>Jogue mais. Gaste menos.<br />Entre em uma família Steam.</h1>
@@ -30,7 +7,6 @@
         expansão de biblioteca de forma 100% legal.
       </p>
 
-      <!-- Barra de Busca de Matchmaking -->
       <form class="search-bar" (ngSubmit)="buscarFamilia()">
         <span class="search-icon">🔍</span>
         <input
@@ -42,7 +18,6 @@
         <button type="submit" class="btn-primary">Encontrar Família</button>
       </form>
 
-      <!-- Prova Social em Tempo Real -->
       <div class="metrics-grid">
         <div class="metric-card" *ngFor="let metrica of metricas">
           <span class="metric-label">{{ metrica.titulo }}</span>

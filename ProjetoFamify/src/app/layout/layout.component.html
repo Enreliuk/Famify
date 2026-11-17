@@ -5,7 +5,7 @@
     [opened]="!(telaPequena$ | async)"
     aria-label="Menu principal">
     <div class="marca">
-      <span class="marca-simbolo" aria-hidden="true">PI</span>
+      <span class="marca-simbolo" aria-hidden="true">FF</span>
       <div><strong>{{ nomeSistema }}</strong><small>Espaço da equipe</small></div>
     </div>
     <div class="rotulo-menu">NAVEGAÇÃO</div>
@@ -26,22 +26,77 @@
 
   <mat-sidenav-content class="area-principal">
     <mat-toolbar class="topo">
-      <button mat-icon-button type="button" (click)="menu.toggle()"
-        aria-label="Abrir ou fechar menu" [attr.aria-expanded]="menu.opened">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <span class="titulo-topo">{{ nomeSistema }}</span>
-      <span class="espacador"></span>
-      <div class="usuario"><span class="avatar" aria-hidden="true">AE</span>
-        <div class="usuario-texto"><strong>{{ usuario }}</strong><small>Perfil de demonstração</small></div>
+      <!-- Botão do Menu Lateral + Marca FAMIFY -->
+      <div class="topo-esquerda">
+        <button
+          mat-icon-button
+          type="button"
+          class="btn-menu-lateral"
+          (click)="menu.toggle()"
+          aria-label="Abrir ou fechar menu"
+          [attr.aria-expanded]="menu.opened"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+
+        <a class="logo" routerLink="/inicio">
+          <i class="fab fa-steam"></i>
+          <span>FAMIFY</span>
+        </a>
+      </div>
+
+      <!-- Links de Navegação (Centralizados) -->
+      <nav class="nav-links">
+        <a routerLink="/grupos" routerLinkActive="ativo">Encontrar Família</a>
+        <a routerLink="/como-funciona" routerLinkActive="ativo">Como Funciona</a>
+        <a routerLink="/regras" routerLinkActive="ativo">Regras Steam</a>
+        <a routerLink="/ajuda" routerLinkActive="ativo">Ajuda</a>
+      </nav>
+
+      <!-- Ações (Direita): Apenas "Conectar Steam" por padrão -->
+      <div class="topo-direita">
+        <!-- Estado Deslogado (Padrão) -->
+        <button
+          *ngIf="!usuarioLogado"
+          type="button"
+          class="btn-steam"
+          (click)="conectarSteam()"
+        >
+          <i class="fab fa-steam"></i> Conectar Steam
+        </button>
+
+        <!-- Estado Logado (Exibido após login) -->
+        <ng-container *ngIf="usuarioLogado">
+          <div class="usuario" title="Conta ativa">
+            <span class="avatar" aria-hidden="true">{{ iniciaisUsuario }}</span>
+            <div class="usuario-texto">
+              <strong>{{ usuario }}</strong>
+              <small>Online na Steam</small>
+            </div>
+          </div>
+
+          <div class="divisor-vertical"></div>
+
+          <button
+            type="button"
+            class="btn-sair"
+            (click)="desconectar()"
+            title="Desconectar conta"
+          >
+            Sair
+          </button>
+        </ng-container>
       </div>
     </mat-toolbar>
+
     <main id="conteudo" class="conteudo" tabindex="-1">
-      <!-- As páginas das rotas são exibidas aqui. -->
       <router-outlet></router-outlet>
     </main>
-    <footer class="rodape">Projeto Integrador <span>Modelo Angular e Material</span></footer>
+
+    <footer class="rodape">
+      Famify — Matchmaking de Famílias Steam
+    </footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

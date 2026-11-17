@@ -3683,6 +3683,7 @@ function provideClientHydration(...features) {
 var VERSION = new Version("20.3.34");
 
 export {
+  HttpClient,
   Meta,
   Title,
   enableDebugTools,
@@ -3704,4 +3705,4 @@ export {
   provideClientHydration,
   VERSION
 };
-//# sourceMappingURL=chunk-FY73M3CG.js.map
+//# sourceMappingURL=chunk-RG2QSGV4.js.map

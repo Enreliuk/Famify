@@ -8,7 +8,7 @@ import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   normalizePassiveListenerOptions
-} from "./chunk-QTZRDHEM.js";
+} from "./chunk-FGPFHPKK.js";
 import {
   coerceElement
 } from "./chunk-VNBHVFUA.js";
@@ -673,4 +673,4 @@ export {
   _StructuralStylesLoader,
   MatRippleModule
 };
-//# sourceMappingURL=chunk-2Q2GCNDN.js.map
+//# sourceMappingURL=chunk-2GZ6LKP7.js.map
