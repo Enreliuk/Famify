@@ -1,5 +1,4 @@
 <div class="match-page">
-  <!-- Cabeçalho e Busca -->
   <header class="match-header">
     <div class="header-text">
       <span class="tag-algoritmo">Algoritmo de MatchMaking Ativo</span>
@@ -28,7 +27,6 @@
     </div>
   </header>
 
-  <!-- Filtros de Afinidade (Genre tags - Slide 10) -->
   <section class="filters-section" aria-label="Filtros por gênero">
     <span class="filter-label">Filtros de Afinidade:</span>
     <div class="genre-tags">
@@ -44,10 +42,8 @@
     </div>
   </section>
 
-  <!-- Grade de Grupos e Match -->
   <section class="families-grid" *ngIf="familiasFiltradas.length > 0; else semResultados">
     <article class="family-card" *ngFor="let familia of familiasFiltradas">
-      <!-- Topo do Card: Nome + Badge de Vagas -->
       <div class="card-top">
         <div>
           <h2>{{ familia.nome }}</h2>
@@ -98,7 +94,6 @@
         </div>
       </div>
 
-      <!-- Match Visual: Miniaturas dos Títulos AAA -->
       <div class="aaa-showcase">
         <div
           class="aaa-thumb"
@@ -109,7 +104,6 @@
         </div>
       </div>
 
-      <!-- Ação: Solicitar Entrada -->
       <button
         type="button"
         class="btn-solicitar"
@@ -121,7 +115,6 @@
     </article>
   </section>
 
-  <!-- Estado Vazio -->
   <ng-template #semResultados>
     <div class="empty-state">
       <h3>Nenhuma família compatível encontrada</h3>

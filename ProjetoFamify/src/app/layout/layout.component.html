@@ -2,7 +2,6 @@
 
 <div class="estrutura area-principal">
   <mat-toolbar class="topo">
-    <!-- Marca FAMIFY -->
     <div class="topo-esquerda">
       <a class="logo" routerLink="/inicio">
         <i class="fab fa-steam"></i>
@@ -10,7 +9,6 @@
       </a>
     </div>
 
-    <!-- Links de Navegação: Apenas "Encontrar Família" navega para /match -->
     <nav class="nav-links">
       <a routerLink="/match" routerLinkActive="ativo">Encontrar Família</a>
       <span class="nav-item-estatico">Como Funciona</span>
@@ -18,9 +16,7 @@
       <span class="nav-item-estatico">Ajuda</span>
     </nav>
 
-    <!-- Ações (Direita): Apenas "Conectar Steam" por padrão -->
     <div class="topo-direita">
-      <!-- Estado Deslogado (Padrão) -->
       <button
         *ngIf="!usuarioLogado"
         type="button"
@@ -30,7 +26,6 @@
         <i class="fab fa-steam"></i> Conectar Steam
       </button>
 
-      <!-- Estado Logado (Exibido após login) -->
       <ng-container *ngIf="usuarioLogado">
         <div class="usuario" title="Conta ativa">
           <span class="avatar" aria-hidden="true">{{ iniciaisUsuario }}</span>

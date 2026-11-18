@@ -60,10 +60,10 @@ export class MatchComponent implements OnInit {
       generos: ['RPG', 'Aventura'],
       avataresMembros: ['FB', 'FT', 'GS'],
       jogosDestaque: [
-        { titulo: 'Elden Ring', capaUrl: 'assets/images/elden-ring.jpg' },
-        { titulo: "Baldur's Gate 3", capaUrl: 'assets/images/baldurs-gate-3.jpg' },
-        { titulo: 'The Witcher 3', capaUrl: 'assets/images/witcher-3.jpg' },
-        { titulo: 'Cyberpunk 2077', capaUrl: 'assets/images/cyberpunk.jpg' }
+        { titulo: 'Elden Ring', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg' },
+        { titulo: "Baldur's Gate 3", capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg' },
+        { titulo: 'The Witcher 3', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg' },
+        { titulo: 'Cyberpunk 2077', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg' }
       ]
     },
     {
@@ -77,10 +77,10 @@ export class MatchComponent implements OnInit {
       generos: ['FPS', 'Co-op', 'RPG'],
       avataresMembros: ['LT', 'MC', 'NS', 'AE'],
       jogosDestaque: [
-        { titulo: 'Cyberpunk 2077', capaUrl: 'assets/images/cyberpunk.jpg' },
-        { titulo: 'Red Dead Redemption 2', capaUrl: 'assets/images/rdr2.jpg' },
-        { titulo: 'Valheim', capaUrl: 'assets/images/valheim.jpg' },
-        { titulo: 'Elden Ring', capaUrl: 'assets/images/elden-ring.jpg' }
+        { titulo: 'Cyberpunk 2077', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg' },
+        { titulo: 'Red Dead Redemption 2', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg' },
+        { titulo: 'Valheim', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/header.jpg' },
+        { titulo: 'Elden Ring', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg' }
       ]
     },
     {
@@ -94,10 +94,10 @@ export class MatchComponent implements OnInit {
       generos: ['Aventura', 'Co-op', 'Indie'],
       avataresMembros: ['RK', 'DM', 'PL'],
       jogosDestaque: [
-        { titulo: 'Valheim', capaUrl: 'assets/images/valheim.jpg' },
-        { titulo: 'Red Dead Redemption 2', capaUrl: 'assets/images/rdr2.jpg' },
-        { titulo: 'The Witcher 3', capaUrl: 'assets/images/witcher-3.jpg' },
-        { titulo: "Baldur's Gate 3", capaUrl: 'assets/images/baldurs-gate-3.jpg' }
+        { titulo: 'Valheim', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/header.jpg' },
+        { titulo: 'Red Dead Redemption 2', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg' },
+        { titulo: 'The Witcher 3', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg' },
+        { titulo: "Baldur's Gate 3", capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg' }
       ]
     },
     {
@@ -111,10 +111,10 @@ export class MatchComponent implements OnInit {
       generos: ['RPG', 'Aventura', 'Estratégia'],
       avataresMembros: ['JS', 'MA', 'CR', 'VN', 'TH'],
       jogosDestaque: [
-        { titulo: 'Red Dead Redemption 2', capaUrl: 'assets/images/rdr2.jpg' },
-        { titulo: 'Elden Ring', capaUrl: 'assets/images/elden-ring.jpg' },
-        { titulo: 'Cyberpunk 2077', capaUrl: 'assets/images/cyberpunk.jpg' },
-        { titulo: 'The Witcher 3', capaUrl: 'assets/images/witcher-3.jpg' }
+        { titulo: 'Red Dead Redemption 2', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg' },
+        { titulo: 'Elden Ring', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg' },
+        { titulo: 'Cyberpunk 2077', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg' },
+        { titulo: 'The Witcher 3', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg' }
       ]
     },
     {
@@ -128,10 +128,10 @@ export class MatchComponent implements OnInit {
       generos: ['Indie', 'Terror', 'Plataforma'],
       avataresMembros: ['AL', 'BR', 'CA', 'DF'],
       jogosDestaque: [
-        { titulo: 'Valheim', capaUrl: 'assets/images/valheim.jpg' },
-        { titulo: "Baldur's Gate 3", capaUrl: 'assets/images/baldurs-gate-3.jpg' },
-        { titulo: 'Elden Ring', capaUrl: 'assets/images/elden-ring.jpg' },
-        { titulo: 'Cyberpunk 2077', capaUrl: 'assets/images/cyberpunk.jpg' }
+        { titulo: 'Valheim', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/header.jpg' },
+        { titulo: "Baldur's Gate 3", capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg' },
+        { titulo: 'Elden Ring', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg' },
+        { titulo: 'Cyberpunk 2077', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg' }
       ]
     },
     {
@@ -145,10 +145,10 @@ export class MatchComponent implements OnInit {
       generos: ['Simulação', 'Estratégia', 'Corrida'],
       avataresMembros: ['GR', 'HT', 'IV', 'JP'],
       jogosDestaque: [
-        { titulo: "Baldur's Gate 3", capaUrl: 'assets/images/baldurs-gate-3.jpg' },
-        { titulo: 'The Witcher 3', capaUrl: 'assets/images/witcher-3.jpg' },
-        { titulo: 'Red Dead Redemption 2', capaUrl: 'assets/images/rdr2.jpg' },
-        { titulo: 'Valheim', capaUrl: 'assets/images/valheim.jpg' }
+        { titulo: "Baldur's Gate 3", capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg' },
+        { titulo: 'The Witcher 3', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg' },
+        { titulo: 'Red Dead Redemption 2', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg' },
+        { titulo: 'Valheim', capaUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/header.jpg' }
       ]
     }
   ];

@@ -36,50 +36,44 @@ export class InicioComponent implements OnInit {
     { titulo: 'Jogos economizados', valor: '38.900' }
   ];
 
-  jogosMaisProcurados: JogoEmAlta[] = [
-    {
-      id: 1,
-      titulo: 'Elden Ring',
-      buscasSemana: '15.400 buscas',
-      crescimento: '+139%',
-      imagemUrl: 'assets/images/elden-ring.jpg'
-    },
-    {
-      id: 2,
-      titulo: 'Cyberpunk 2077',
-      buscasSemana: '11.200 buscas',
-      crescimento: '+84%',
-      imagemUrl: 'assets/images/cyberpunk.jpg'
-    },
-    {
-      id: 3,
-      titulo: "Baldur's Gate 3",
-      buscasSemana: '9.850 buscas',
-      crescimento: '+112%',
-      imagemUrl: 'assets/images/baldurs-gate-3.jpg'
-    },
-    {
-      id: 4,
-      titulo: 'The Witcher 3',
-      buscasSemana: '7.430 buscas',
-      crescimento: '+45%',
-      imagemUrl: 'assets/images/witcher-3.jpg'
-    },
-    {
-      id: 5,
-      titulo: 'Valheim',
-      buscasSemana: '6.120 buscas',
-      crescimento: '+30%',
-      imagemUrl: 'assets/images/valheim.jpg'
-    },
-    {
-      id: 6,
-      titulo: 'Red Dead Redemption 2',
-      buscasSemana: '8.900 buscas',
-      crescimento: '+62%',
-      imagemUrl: 'assets/images/rdr2.jpg'
-    }
-  ];
+  jogosMaisProcurados = [
+  {
+    titulo: 'Elden Ring',
+    crescimento: '+139%',
+    buscasSemana: '15.400 buscas',
+    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg'
+  },
+  {
+    titulo: 'Cyberpunk 2077',
+    crescimento: '+84%',
+    buscasSemana: '11.200 buscas',
+    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg'
+  },
+  {
+    titulo: "Baldur's Gate 3",
+    crescimento: '+112%',
+    buscasSemana: '9.850 buscas',
+    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg'
+  },
+  {
+    titulo: 'The Witcher 3',
+    crescimento: '+45%',
+    buscasSemana: '7.430 buscas',
+    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg'
+  },
+  {
+    titulo: 'Valheim',
+    crescimento: '+30%',
+    buscasSemana: '6.120 buscas',
+    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/header.jpg'
+  },
+  {
+    titulo: 'Red Dead Redemption 2',
+    crescimento: '+62%',
+    buscasSemana: '8.900 buscas',
+    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg'
+  }
+];
 
   constructor(private router: Router) {}
 
