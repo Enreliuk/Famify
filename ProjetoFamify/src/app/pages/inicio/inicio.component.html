@@ -1,54 +1,130 @@
 <div class="famify-home">
   <main class="hero-section">
+    <div class="hero-glow hero-glow-um"></div>
+    <div class="hero-glow hero-glow-dois"></div>
+
     <div class="hero-content">
-      <h1>Jogue mais. Gaste menos.<br />Entre em uma família Steam.</h1>
+
+      <h1>Mais jogos.<br /><span>Mais gente pra jogar.</span></h1>
       <p class="subtitle">
-        A ponte inteligente entre quem quer jogar e quem tem o jogo. Economia e
-        expansão de biblioteca de forma 100% legal.
+        Encontre uma família Steam com os mesmos interesses e descubra novos jogos
+        para jogar junto — tudo em um só lugar.
       </p>
 
       <form class="search-bar" (ngSubmit)="buscarFamilia()">
-        <span class="search-icon">🔍</span>
-        <input
-          type="text"
-          [(ngModel)]="termoBusca"
-          name="termoBusca"
-          placeholder="Buscar por jogo (ex: Elden Ring) ou gênero..."
-        />
-        <button routerLink="/match" type="submit" class="btn-primary">Encontrar Família</button>
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Busque por jogo, gênero ou família</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input
+            matInput
+            type="search"
+            [(ngModel)]="termoBusca"
+            name="termoBusca"
+            placeholder="Ex.: Elden Ring, RPG, Pixel Squad"
+          />
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" class="search-submit">
+          <span>Encontrar família</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
       </form>
 
-      <div class="metrics-grid">
-        <div class="metric-card" *ngFor="let metrica of metricas">
-          <span class="metric-label">{{ metrica.titulo }}</span>
-          <strong class="metric-value">{{ metrica.valor }}</strong>
-        </div>
+      <div class="metrics-grid" aria-label="Famify em números">
+        <mat-card class="metric-card" appearance="outlined" *ngFor="let metrica of metricas">
+          <mat-card-content>
+            <span class="metric-label">{{ metrica.titulo }}</span>
+            <strong class="metric-value">{{ metrica.valor }}</strong>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
   </main>
 
-  <section class="trending-section">
+  <section class="trending-section" aria-labelledby="trending-title">
     <div class="section-header">
-      <h2>Jogos mais procurados</h2>
-      <span class="badge-period">Últimos 7 dias</span>
+      <div>
+        <span class="section-eyebrow">O que a comunidade está jogando</span>
+        <h2 id="trending-title">Em alta na Steam</h2>
+      </div>
+      <mat-chip-set aria-label="Período"><mat-chip>Últimos 7 dias</mat-chip></mat-chip-set>
     </div>
 
     <div class="games-grid">
-      <div
+      <mat-card
         class="game-card"
+        appearance="outlined"
         *ngFor="let jogo of jogosMaisProcurados"
-        (click)="filtrarPorJogo(jogo.titulo)"
       >
         <div class="game-cover">
-          <img [src]="jogo.imagemUrl" [alt]="jogo.titulo" />
-          <span class="growth-badge">{{ jogo.crescimento }}</span>
+          <img [src]="jogo.imagemUrl" [alt]="'Capa de ' + jogo.titulo" />
+          <mat-chip class="growth-badge">
+            <mat-icon matChipAvatar>trending_up</mat-icon>{{ jogo.crescimento }}
+          </mat-chip>
         </div>
+        <mat-card-content class="game-info">
+          <div>
+            <h3>{{ jogo.titulo }}</h3>
+            <p><mat-icon>search</mat-icon>{{ jogo.buscasSemana }}</p>
+          </div>
+          <button
+            mat-icon-button
+            color="primary"
+            type="button"
+            [attr.aria-label]="'Buscar famílias para ' + jogo.titulo"
+            (click)="filtrarPorJogo(jogo.titulo)"
+          >
+            <mat-icon>arrow_outward</mat-icon>
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
 
-        <div class="game-info">
-          <h3>{{ jogo.titulo }}</h3>
-          <p class="search-stats">🔍 {{ jogo.buscasSemana }}</p>
-        </div>
+  <section id="como-funciona" class="info-section" aria-labelledby="como-title">
+    <div class="section-header">
+      <div>
+        <span class="section-eyebrow">Simples assim</span>
+        <h2 id="como-title">Como funciona</h2>
       </div>
     </div>
+    <div class="steps-grid">
+      <mat-card class="step-card" appearance="outlined">
+        <mat-card-content>
+          <span class="step-icon"><mat-icon>person_search</mat-icon></span>
+          <span class="step-number">01</span>
+          <h3>Encontre seu grupo</h3>
+          <p>Explore famílias e filtre por jogos e gêneros que combinam com você.</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="step-card" appearance="outlined">
+        <mat-card-content>
+          <span class="step-icon"><mat-icon>send</mat-icon></span>
+          <span class="step-number">02</span>
+          <h3>Envie uma solicitação</h3>
+          <p>Conheça os grupos disponíveis e peça para fazer parte da comunidade.</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="step-card" appearance="outlined">
+        <mat-card-content>
+          <span class="step-icon"><mat-icon>sports_esports</mat-icon></span>
+          <span class="step-number">03</span>
+          <h3>Jogue em família</h3>
+          <p>Conecte-se com pessoas novas e aproveite mais momentos de jogo.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <section id="regras-steam" class="rules-banner" aria-labelledby="rules-title">
+    <span class="rules-icon"><mat-icon>verified_user</mat-icon></span>
+    <div>
+      <span class="section-eyebrow">Jogar com tranquilidade</span>
+      <h2 id="rules-title">Feito para respeitar as regras da Steam</h2>
+      <p>
+        Famílias Steam têm limite de até 6 membros e cada conta pode participar
+        de uma família por vez. Confira sempre as regras oficiais antes de entrar.
+      </p>
+    </div>
+    <mat-icon class="rules-arrow" aria-hidden="true">arrow_downward</mat-icon>
   </section>
 </div>

@@ -1,237 +1,238 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
 .estrutura {
   min-height: 100dvh;
-  background-color: #11141a;
-}
-
-/* Área Principal */
-.area-principal {
   display: flex;
   flex-direction: column;
-  background: radial-gradient(circle at top center, #1b2838 0%, #11141a 55%);
-  color: #ffffff;
+  background: var(--famify-background);
+  color: var(--famify-ink);
 }
 
-/* Barra Superior (Topbar) */
 .topo {
-  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background: rgba(23, 26, 33, 0.92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 1.5rem;
   height: 76px;
-  padding: 0 36px;
-  color: #ffffff;
+  padding: 0 clamp(1.25rem, 5vw, 5rem);
+  background: rgba(29, 24, 36, 0.9);
+  color: var(--famify-ink);
+  border-bottom: 1px solid var(--famify-border);
+  backdrop-filter: blur(18px);
 }
 
-.topo-esquerda {
-  display: flex;
+.logo,
+.rodape-logo {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: #ffffff;
+  gap: 0.65rem;
+  color: var(--famify-ink);
   text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
 }
 
-.logo i {
-  color: #1a9fff;
-  font-size: 22px;
+.logo-simbolo {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(140deg, #d946a7, #7157d9);
+  border-radius: 13px;
 }
 
-/* Links Centrais */
+.logo-simbolo mat-icon {
+  width: 23px;
+  height: 23px;
+  font-size: 23px;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 28px;
-}
-
-.nav-links a,
-.nav-item-estatico {
-  color: #8f98a0;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: color 0.2s;
+  gap: 0.3rem;
 }
 
 .nav-links a {
-  cursor: pointer;
-}
-
-.nav-item-estatico {
-  cursor: default;
+  color: var(--famify-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .nav-links a:hover,
 .nav-links a.ativo {
-  color: #ffffff;
+  color: var(--famify-magenta);
+  background: rgba(233, 113, 199, 0.12);
 }
 
-/* Lado Direito: Botão Steam + Usuário Ativo */
 .topo-direita {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 0.8rem;
 }
 
 .btn-steam {
-  background: #5c7e10;
-  color: #d2efa9;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: filter 0.2s, transform 0.15s;
+  min-height: 42px;
+  border-radius: 12px;
 }
 
-.btn-steam:hover {
-  filter: brightness(1.15);
-}
-
-.btn-sair {
-  background: transparent;
-  color: #8f98a0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.btn-sair:hover {
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.divisor-vertical {
-  width: 1px;
-  height: 28px;
-  background-color: rgba(255, 255, 255, 0.1);
+.btn-steam mat-icon {
+  margin-right: 0.35rem;
 }
 
 .usuario {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.usuario:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  gap: 0.65rem;
 }
 
 .avatar {
-  background: #1b2838;
-  color: #66c0f4;
-  border: 1px solid rgba(102, 192, 244, 0.35);
   width: 38px;
   height: 38px;
-  border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 12px;
-  font-weight: 700;
+  border-radius: 50%;
+  color: var(--famify-violet);
+  background: var(--famify-surface-high);
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .usuario-texto strong,
 .usuario-texto small {
   display: block;
-  line-height: 1.4;
 }
 
 .usuario-texto strong {
-  font-size: 13px;
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 0.84rem;
 }
 
 .usuario-texto small {
-  font-size: 11px;
-  color: #66c0f4;
-  font-weight: 400;
+  color: var(--famify-positive);
+  font-size: 0.7rem;
 }
 
-/* Container onde o <router-outlet> renderiza as páginas */
+.btn-sair {
+  color: var(--famify-muted);
+}
+
 .conteudo {
   flex: 1;
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
-/* Rodapé */
 .rodape {
-  padding: 18px 40px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: #171a21;
-  font-size: 11px;
-  color: #8f98a0;
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.35rem clamp(1.25rem, 5vw, 5rem);
+  border-top: 1px solid var(--famify-border);
+  background: var(--famify-surface);
+  color: var(--famify-muted);
+  font-size: 0.78rem;
 }
 
-/* Acessibilidade */
+.rodape-logo {
+  gap: 0.4rem;
+  font-size: 1rem;
+}
+
+.rodape-logo mat-icon {
+  color: var(--famify-magenta);
+}
+
 .pular-conteudo {
   position: fixed;
   left: 12px;
   top: -100px;
   z-index: 1000;
-  background: #1a9fff;
-  color: #ffffff;
-  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--famify-violet);
+  color: #fff;
+  font-weight: 700;
   text-decoration: none;
-  font-weight: 600;
-  padding: 12px;
 }
 
 .pular-conteudo:focus {
   top: 12px;
 }
 
-/* Responsividade */
-@media (max-width: 960px) {
-  .nav-links {
-    gap: 16px;
+@media (max-width: 860px) {
+  .topo {
+    gap: 0.6rem;
+    padding: 0 1.2rem;
   }
-  .nav-item-estatico {
-    display: none;
+
+  .nav-links {
+    gap: 0;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 650px) {
   .topo {
-    padding: 0 16px;
-    height: 68px;
+    height: auto;
+    min-height: 68px;
+    flex-wrap: wrap;
+    padding: 0.6rem 1rem;
   }
-  .usuario-texto,
-  .divisor-vertical {
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .logo-simbolo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-links a {
+    min-width: 0;
+    padding: 0 0.45rem;
+    font-size: 0.72rem;
+  }
+
+  .topo-direita {
+    gap: 0.25rem;
+  }
+
+  .btn-steam {
+    min-width: 0;
+    padding: 0 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  .btn-steam mat-icon {
+    margin: 0;
+  }
+
+  .btn-steam span,
+  .usuario-texto {
     display: none;
   }
-  .btn-steam {
-    padding: 7px 10px;
-    font-size: 12px;
-  }
+
   .rodape {
-    padding: 18px 20px;
-    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    padding: 1.2rem;
   }
 }

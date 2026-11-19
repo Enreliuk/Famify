@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
 
 interface Metrica {
   titulo: string;
@@ -21,7 +27,13 @@ interface JogoEmAlta {
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatChipsModule
   ],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
@@ -80,13 +92,9 @@ export class InicioComponent implements OnInit {
   ngOnInit(): void {}
 
   buscarFamilia(): void {
-    if (this.termoBusca.trim()) {
-      this.router.navigate(['/grupos'], {
-        queryParams: { q: this.termoBusca }
-      });
-    } else {
-      this.router.navigate(['/grupos']);
-    }
+    this.router.navigate(['/match'], {
+      queryParams: this.termoBusca.trim() ? { q: this.termoBusca.trim() } : {}
+    });
   }
 
   filtrarPorJogo(nomeJogo: string): void {

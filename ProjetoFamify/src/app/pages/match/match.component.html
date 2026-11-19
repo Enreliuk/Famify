@@ -1,131 +1,158 @@
 <div class="match-page">
   <header class="match-header">
     <div class="header-text">
-      <span class="tag-algoritmo">Algoritmo de MatchMaking Ativo</span>
-      <h1>Grupos Familiares Disponíveis</h1>
-      <p>
-        Conexões filtradas por afinidade de biblioteca e títulos pagos. Limite
-        oficial de até 6 membros por família Steam.
-      </p>
+      <h1>Encontre sua próxima família</h1>
+      <p>Grupos com espaço para novos membros e jogos que têm tudo a ver com você.</p>
     </div>
 
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
+    <mat-form-field appearance="outline" class="search-box">
+      <mat-label>Buscar famílias ou jogos</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
       <input
-        type="text"
+        matInput
+        type="search"
         [(ngModel)]="termoFiltro"
-        placeholder="Filtrar por jogo (ex: Elden Ring) ou nome da família..."
+        placeholder="Ex.: Elden Ring, Pixel Squad"
       />
       <button
         *ngIf="termoFiltro"
+        mat-icon-button
+        matSuffix
         type="button"
-        class="btn-limpar"
+        aria-label="Limpar busca"
         (click)="termoFiltro = ''"
       >
-        ✕
+        <mat-icon>close</mat-icon>
       </button>
-    </div>
+    </mat-form-field>
   </header>
 
   <section class="filters-section" aria-label="Filtros por gênero">
-    <span class="filter-label">Filtros de Afinidade:</span>
-    <div class="genre-tags">
-      <button
-        type="button"
-        class="genre-pill"
+    <div class="filter-heading">
+      <mat-icon>tune</mat-icon>
+      <span>Explore por afinidade</span>
+    </div>
+    <mat-chip-listbox aria-label="Filtrar por gênero">
+      <mat-chip-option
         *ngFor="let genero of generosDisponiveis"
-        [class.ativa]="generoSelecionado === genero"
+        [selected]="generoSelecionado === genero"
         (click)="selecionarGenero(genero)"
       >
         {{ genero }}
-      </button>
-    </div>
+      </mat-chip-option>
+    </mat-chip-listbox>
   </section>
 
+  <div class="results-heading">
+    <h2>Famílias disponíveis</h2>
+    <span>{{ familiasFiltradas.length }} resultados</span>
+  </div>
+
   <section class="families-grid" *ngIf="familiasFiltradas.length > 0; else semResultados">
-    <article class="family-card" *ngFor="let familia of familiasFiltradas">
-      <div class="card-top">
-        <div>
-          <h2>{{ familia.nome }}</h2>
-          <p class="family-desc">{{ familia.descricao }}</p>
-        </div>
-
-        <span
-          class="vagas-badge"
-          [class.ultima-vaga]="familia.vagasDisponiveis === 1"
-        >
-          {{
-            familia.vagasDisponiveis === 1
-              ? 'Última vaga'
-              : familia.vagasDisponiveis + ' vagas'
-          }}
-        </span>
-      </div>
-
-      <!-- Membros Atuais e Contador (ex: 3/5, 4/6) -->
-      <div class="members-row">
-        <div class="avatars-group">
-          <span
-            class="member-avatar"
-            *ngFor="let sigla of familia.avataresMembros"
+    <mat-card class="family-card" appearance="outlined" *ngFor="let familia of familiasFiltradas">
+      <mat-card-content>
+        <div class="card-top">
+          <div class="family-title">
+            <span class="family-avatar"><mat-icon>groups</mat-icon></span>
+            <div>
+              <h3>{{ familia.nome }}</h3>
+              <p class="family-desc">{{ familia.descricao }}</p>
+            </div>
+          </div>
+          <mat-chip
+            class="vagas-badge"
+            [class.ultima-vaga]="familia.vagasDisponiveis === 1"
           >
-            {{ sigla }}
+            {{
+              familia.vagasDisponiveis === 1
+                ? 'Última vaga'
+                : familia.vagasDisponiveis + ' vagas'
+            }}
+          </mat-chip>
+        </div>
+
+        <div class="members-row">
+          <div class="avatars-group" aria-label="Membros atuais">
+            <span
+              class="member-avatar"
+              *ngFor="let sigla of familia.avataresMembros"
+              [attr.aria-label]="'Membro ' + sigla"
+            >
+              {{ sigla }}
+            </span>
+            <span class="member-avatar vaga-livre" title="Vaga disponível">+</span>
+          </div>
+          <span class="members-count">
+            <mat-icon>group</mat-icon>
+            {{ familia.membrosAtuais }}/{{ familia.limiteMembros }} membros
           </span>
-          <span class="member-avatar vaga-livre" title="Vaga disponível">+</span>
         </div>
 
-        <span class="members-count">
-          👤 {{ familia.membrosAtuais }}/{{ familia.limiteMembros }}
-        </span>
-      </div>
+        <div class="library-stats">
+          <div class="stats-labels">
+            <span>Ocupação da família</span>
+            <strong>{{ familia.membrosAtuais }}/{{ familia.limiteMembros }}</strong>
+          </div>
+          <mat-progress-bar
+            mode="determinate"
+            [value]="calcularPorcentagemOcupacao(familia)"
+            [attr.aria-label]="'Ocupação: ' + calcularPorcentagemOcupacao(familia) + '%'"
+          ></mat-progress-bar>
+          <div class="library-total">
+            <span><mat-icon>sports_esports</mat-icon> Biblioteca compartilhada</span>
+            <strong>{{ familia.totalJogos }} jogos</strong>
+          </div>
+        </div>
 
-      <!-- Barra de Ocupação + Total de Biblioteca -->
-      <div class="library-stats">
-        <div class="progress-track">
+        <div class="games-heading">
+          <span>Jogos em destaque</span>
+          <mat-chip-set aria-label="Gêneros da família">
+            <mat-chip *ngFor="let genero of familia.generos">{{ genero }}</mat-chip>
+          </mat-chip-set>
+        </div>
+        <div class="aaa-showcase">
           <div
-            class="progress-fill"
-            [style.width.%]="calcularPorcentagemOcupacao(familia)"
-          ></div>
+            class="aaa-thumb"
+            *ngFor="let jogo of familia.jogosDestaque"
+            [title]="jogo.titulo"
+          >
+            <img [src]="jogo.capaUrl" [alt]="'Capa de ' + jogo.titulo" />
+          </div>
         </div>
+      </mat-card-content>
 
-        <div class="stats-labels">
-          <span>Total de biblioteca</span>
-          <strong>{{ familia.totalJogos }} jogos</strong>
-        </div>
-      </div>
-
-      <div class="aaa-showcase">
-        <div
-          class="aaa-thumb"
-          *ngFor="let jogo of familia.jogosDestaque"
-          [title]="jogo.titulo"
+      <mat-card-actions>
+        <button
+          mat-flat-button
+          color="primary"
+          type="button"
+          class="btn-solicitar"
+          [class.solicitado]="familia.solicitado"
+          (click)="solicitarEntrada(familia)"
         >
-          <img [src]="jogo.capaUrl" [alt]="jogo.titulo" />
-        </div>
-      </div>
-
-      <button
-        type="button"
-        class="btn-solicitar"
-        [class.solicitado]="familia.solicitado"
-        (click)="solicitarEntrada(familia)"
-      >
-        {{ familia.solicitado ? '✓ Solicitação enviada' : 'Solicitar entrada' }}
-      </button>
-    </article>
+          <mat-icon>{{ familia.solicitado ? 'check_circle' : 'person_add' }}</mat-icon>
+          {{ familia.solicitado ? 'Solicitação enviada' : 'Solicitar entrada' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </section>
 
   <ng-template #semResultados>
-    <div class="empty-state">
-      <h3>Nenhuma família compatível encontrada</h3>
-      <p>Tente remover os filtros de gênero ou pesquisar por outro título.</p>
-      <button
-        type="button"
-        class="btn-reset"
-        (click)="generoSelecionado = 'Todos'; termoFiltro = ''"
-      >
-        Limpar filtros
-      </button>
-    </div>
+    <mat-card class="empty-state" appearance="outlined">
+      <mat-card-content>
+        <span class="empty-icon"><mat-icon>search_off</mat-icon></span>
+        <h3>Nenhuma família compatível encontrada</h3>
+        <p>Tente remover os filtros de gênero ou pesquisar por outro título.</p>
+        <button
+          mat-stroked-button
+          color="primary"
+          type="button"
+          (click)="generoSelecionado = 'Todos'; termoFiltro = ''"
+        >
+          <mat-icon>filter_alt_off</mat-icon>
+          Limpar filtros
+        </button>
+      </mat-card-content>
+    </mat-card>
   </ng-template>
 </div>

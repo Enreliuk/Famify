@@ -1,122 +1,132 @@
 <div class="auth-container">
-  <div class="auth-card">
-    <!-- Cabeçalho do Card -->
-    <div class="auth-header">
-      <div class="auth-logo">
-        <i class="fab fa-steam"></i>
-        <span>FAMIFY</span>
-      </div>
-      <h1>{{ modoCadastro ? 'Crie sua conta' : 'Bem-vindo de volta' }}</h1>
-      <p>
-        {{
-          modoCadastro
-            ? 'Importe sua biblioteca Steam e defina seus jogos de interesse para encontrar grupos compatíveis.'
-            : 'Entre para gerenciar suas solicitações de família e sincronizar sua biblioteca.'
-        }}
-      </p>
-    </div>
+  <mat-card class="auth-card" appearance="outlined">
+    <mat-card-content>
+      <header class="auth-header">
+        <span class="auth-mark"><mat-icon>groups</mat-icon></span>
+        <span class="section-eyebrow">Bom ter você por aqui</span>
+        <h1>{{ modoCadastro ? 'Crie sua conta' : 'Bem-vindo de volta' }}</h1>
+        <p>
+          {{
+            modoCadastro
+              ? 'Crie seu perfil para encontrar uma família com os mesmos interesses.'
+              : 'Entre para gerenciar suas solicitações e encontrar sua próxima família.'
+          }}
+        </p>
+      </header>
 
-    <!-- Botão Principal de Integração Steam -->
-    <button type="button" class="btn-steam-oauth" (click)="entrarComSteam()">
-      <i class="fab fa-steam"></i>
-      <span>Continuar com a Steam (Recomendado)</span>
-    </button>
-
-    <div class="divisor">
-      <span>ou use seu e-mail</span>
-    </div>
-
-    <!-- Seletor de Abas (Login / Cadastro) -->
-    <div class="auth-tabs">
       <button
+        mat-flat-button
         type="button"
-        [class.ativa]="!modoCadastro"
-        (click)="alternarModo(false)"
+        class="btn-steam-oauth"
+        (click)="entrarComSteam()"
       >
-        Entrar
+        <mat-icon>sports_esports</mat-icon>
+        <span>Continuar com a Steam</span>
+        <mat-icon class="btn-arrow">arrow_forward</mat-icon>
       </button>
-      <button
-        type="button"
-        [class.ativa]="modoCadastro"
-        (click)="alternarModo(true)"
+
+      <div class="divisor"><mat-divider></mat-divider><span>ou use seu e-mail</span><mat-divider></mat-divider></div>
+
+      <mat-button-toggle-group
+        class="auth-tabs"
+        aria-label="Modo de acesso"
+        [value]="modoCadastro"
+        (change)="alternarModo($event.value)"
       >
-        Criar Conta
-      </button>
-    </div>
+        <mat-button-toggle [value]="false">Entrar</mat-button-toggle>
+        <mat-button-toggle [value]="true">Criar conta</mat-button-toggle>
+      </mat-button-toggle-group>
 
-    <!-- Mensagem de validação -->
-    <div class="alerta-erro" *ngIf="erroMensagem">
-      {{ erroMensagem }}
-    </div>
-
-    <!-- Formulário -->
-    <form (ngSubmit)="enviarFormulario()" class="auth-form">
-      <div class="campo" *ngIf="modoCadastro">
-        <label for="nome">Apelido / Nome de exibição</label>
-        <input
-          id="nome"
-          type="text"
-          [(ngModel)]="nome"
-          name="nome"
-          placeholder="Ex: PlayerOne"
-        />
+      <div class="alerta-erro" role="alert" *ngIf="erroMensagem">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ erroMensagem }}</span>
       </div>
 
-      <div class="campo">
-        <label for="email">E-mail</label>
-        <input
-          id="email"
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="voce@exemplo.com"
-        />
-      </div>
-
-      <div class="campo">
-        <label for="senha">Senha</label>
-        <input
-          id="senha"
-          type="password"
-          [(ngModel)]="senha"
-          name="senha"
-          placeholder="••••••••"
-        />
-      </div>
-
-      <!-- Campos extras específicos do Famify no Cadastro -->
-      <ng-container *ngIf="modoCadastro">
-        <div class="campo">
-          <label for="steamUrl">SteamID ou URL do Perfil Público</label>
+      <form (ngSubmit)="enviarFormulario()" class="auth-form">
+        <mat-form-field appearance="outline" *ngIf="modoCadastro">
+          <mat-label>Apelido ou nome de exibição</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
           <input
-            id="steamUrl"
+            matInput
+            id="nome"
             type="text"
-            [(ngModel)]="steamProfileUrl"
-            name="steamProfileUrl"
-            placeholder="steamcommunity.com/id/seuperfil"
+            [(ngModel)]="nome"
+            name="nome"
+            placeholder="Ex.: PlayerOne"
+            autocomplete="nickname"
           />
-          <small>Necessário para validar jogos pagos da biblioteca.</small>
-        </div>
+        </mat-form-field>
 
-        <div class="campo">
-          <label for="interesses">Jogos que deseja jogar (Lista de Interesses)</label>
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <mat-icon matPrefix>mail</mat-icon>
           <input
-            id="interesses"
-            type="text"
-            [(ngModel)]="jogosDesejados"
-            name="jogosDesejados"
-            placeholder="Ex: Elden Ring, Baldur's Gate 3, Cyberpunk 2077"
+            matInput
+            id="email"
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            placeholder="voce@exemplo.com"
+            autocomplete="email"
           />
-        </div>
-      </ng-container>
+        </mat-form-field>
 
-      <button type="submit" class="btn-submit">
-        {{ modoCadastro ? 'Finalizar Cadastro e Buscar Família' : 'Entrar no Famify' }}
-      </button>
-    </form>
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            id="senha"
+            type="password"
+            [(ngModel)]="senha"
+            name="senha"
+            placeholder="Sua senha"
+            autocomplete="current-password"
+          />
+        </mat-form-field>
 
-    <p class="aviso-seguranca">
-      🔒 Respeitamos as regras oficiais da Steam: apenas 1 família ativa por conta e limite máximo de 6 membros por grupo.
-    </p>
-  </div>
+        <ng-container *ngIf="modoCadastro">
+          <mat-form-field appearance="outline">
+            <mat-label>SteamID ou URL do perfil público</mat-label>
+            <mat-icon matPrefix>link</mat-icon>
+            <input
+              matInput
+              id="steamUrl"
+              type="text"
+              [(ngModel)]="steamProfileUrl"
+              name="steamProfileUrl"
+              placeholder="steamcommunity.com/id/seuperfil"
+            />
+            <mat-hint>Usado para validar os jogos da biblioteca.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Jogos que deseja jogar</mat-label>
+            <mat-icon matPrefix>sports_esports</mat-icon>
+            <input
+              matInput
+              id="interesses"
+              type="text"
+              [(ngModel)]="jogosDesejados"
+              name="jogosDesejados"
+              placeholder="Ex.: Elden Ring, Baldur's Gate 3"
+            />
+          </mat-form-field>
+        </ng-container>
+
+        <button mat-flat-button color="primary" type="submit" class="btn-submit">
+          {{ modoCadastro ? 'Finalizar cadastro' : 'Entrar no Famify' }}
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </form>
+
+      <div class="aviso-seguranca">
+        <mat-icon>verified_user</mat-icon>
+        <p>
+          Respeitamos as regras oficiais da Steam: apenas uma família ativa por
+          conta e até 6 membros por grupo.
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

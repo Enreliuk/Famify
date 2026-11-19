@@ -1,11 +1,32 @@
 import {
   MediaMatcher
-} from "./chunk-RPF6UP6U.js";
+} from "./chunk-QHANBIZL.js";
 import {
   ANIMATION_MODULE_TYPE,
   InjectionToken,
-  inject
+  NgModule,
+  inject,
+  setClassMetadata,
+  ɵɵdefineInjector,
+  ɵɵdefineNgModule
 } from "./chunk-TBQC3CLN.js";
+
+// node_modules/@angular/cdk/fesm2022/layout.mjs
+var LayoutModule = class _LayoutModule {
+  static ɵfac = function LayoutModule_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _LayoutModule)();
+  };
+  static ɵmod = ɵɵdefineNgModule({
+    type: _LayoutModule
+  });
+  static ɵinj = ɵɵdefineInjector({});
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(LayoutModule, [{
+    type: NgModule,
+    args: [{}]
+  }], null, null);
+})();
 
 // node_modules/@angular/material/fesm2022/animation.mjs
 var MATERIAL_ANIMATIONS = new InjectionToken("MATERIAL_ANIMATIONS");
@@ -21,13 +42,8 @@ function _animationsDisabled() {
   return _getAnimationsState() !== "enabled";
 }
 
-// node_modules/@angular/cdk/fesm2022/coercion.mjs
-function coerceBooleanProperty(value) {
-  return value != null && `${value}` !== "false";
-}
-
 export {
-  _animationsDisabled,
-  coerceBooleanProperty
+  _getAnimationsState,
+  _animationsDisabled
 };
-//# sourceMappingURL=chunk-Z74JKY7V.js.map
+//# sourceMappingURL=chunk-VOO7DMDJ.js.map

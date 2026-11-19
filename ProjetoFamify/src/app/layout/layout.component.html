@@ -1,29 +1,28 @@
 <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
-<div class="estrutura area-principal">
+<div class="estrutura">
   <mat-toolbar class="topo">
-    <div class="topo-esquerda">
-      <a class="logo" routerLink="/inicio">
-        <i class="fab fa-steam"></i>
-        <span>FAMIFY</span>
-      </a>
-    </div>
+    <a class="logo" routerLink="/inicio" aria-label="Famify — página inicial">
+      <span class="logo-simbolo"><mat-icon>groups</mat-icon></span>
+      <span>famify</span>
+    </a>
 
-    <nav class="nav-links">
-      <a routerLink="/match" routerLinkActive="ativo">Encontrar Família</a>
-      <span class="nav-item-estatico">Como Funciona</span>
-      <span class="nav-item-estatico">Regras Steam</span>
-      <span class="nav-item-estatico">Ajuda</span>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a mat-button routerLink="/match" routerLinkActive="ativo">Encontrar família</a>
+      <a mat-button routerLink="/inicio" fragment="como-funciona">Como funciona</a>
+      <a mat-button routerLink="/inicio" fragment="regras-steam">Regras Steam</a>
     </nav>
 
     <div class="topo-direita">
       <button
         *ngIf="!usuarioLogado"
-        type="button"
+        mat-flat-button
         class="btn-steam"
+        type="button"
         (click)="conectarSteam()"
       >
-        <i class="fab fa-steam"></i> Conectar Steam
+        <mat-icon>sports_esports</mat-icon>
+        <span>Conectar Steam</span>
       </button>
 
       <ng-container *ngIf="usuarioLogado">
@@ -34,10 +33,8 @@
             <small>Online na Steam</small>
           </div>
         </div>
-
-        <div class="divisor-vertical"></div>
-
         <button
+          mat-button
           type="button"
           class="btn-sair"
           (click)="desconectar()"
@@ -54,6 +51,10 @@
   </main>
 
   <footer class="rodape">
-    Famify — Matchmaking de Famílias Steam
+    <a class="rodape-logo" routerLink="/inicio">
+      <mat-icon>groups</mat-icon> famify
+    </a>
+    <span>Conectando jogadores. Compartilhando boas histórias.</span>
+    <span>Famify — Matchmaking de Famílias Steam</span>
   </footer>
 </div>

@@ -1,25 +1,22 @@
 import {
-  coerceElement,
-  coerceNumberProperty
-} from "./chunk-VNBHVFUA.js";
-import {
-  BreakpointObserver
-} from "./chunk-RPF6UP6U.js";
-import {
-  Platform
-} from "./chunk-T3HAY2SG.js";
-import {
   BidiModule
 } from "./chunk-UUSOUDZU.js";
 import {
+  _CdkPrivateStyleLoader
+} from "./chunk-VA223NVT.js";
+import {
+  Platform,
+  coerceElement,
+  coerceNumberProperty
+} from "./chunk-L2PK47EN.js";
+import {
   APP_ID,
-  ApplicationRef,
+  CSP_NONCE,
   ChangeDetectionStrategy,
   Component,
   DOCUMENT,
   Directive,
   ElementRef,
-  EnvironmentInjector,
   EventEmitter,
   Injectable,
   InjectionToken,
@@ -33,7 +30,6 @@ import {
   ViewEncapsulation,
   afterNextRender,
   booleanAttribute,
-  createComponent,
   effect,
   inject,
   isSignal,
@@ -51,6 +47,8 @@ import {
   Observable,
   Subject,
   Subscription,
+  combineLatest,
+  concat,
   debounceTime,
   distinctUntilChanged,
   filter,
@@ -58,6 +56,7 @@ import {
   map,
   of,
   skip,
+  startWith,
   take,
   takeUntil,
   tap
@@ -67,6 +66,7 @@ import {
 } from "./chunk-WDMUDEB6.js";
 
 // node_modules/@angular/cdk/fesm2022/keycodes2.mjs
+var BACKSPACE = 8;
 var TAB = 9;
 var ENTER = 13;
 var SHIFT = 16;
@@ -82,6 +82,7 @@ var LEFT_ARROW = 37;
 var UP_ARROW = 38;
 var RIGHT_ARROW = 39;
 var DOWN_ARROW = 40;
+var DELETE = 46;
 var ZERO = 48;
 var NINE = 57;
 var A = 65;
@@ -630,55 +631,6 @@ var CdkMonitorFocus = class _CdkMonitorFocus {
   });
 })();
 
-// node_modules/@angular/cdk/fesm2022/style-loader.mjs
-var appsWithLoaders = /* @__PURE__ */ new WeakMap();
-var _CdkPrivateStyleLoader = class __CdkPrivateStyleLoader {
-  _appRef;
-  _injector = inject(Injector);
-  _environmentInjector = inject(EnvironmentInjector);
-  /**
-   * Loads a set of styles.
-   * @param loader Component which will be instantiated to load the styles.
-   */
-  load(loader) {
-    const appRef = this._appRef = this._appRef || this._injector.get(ApplicationRef);
-    let data = appsWithLoaders.get(appRef);
-    if (!data) {
-      data = {
-        loaders: /* @__PURE__ */ new Set(),
-        refs: []
-      };
-      appsWithLoaders.set(appRef, data);
-      appRef.onDestroy(() => {
-        appsWithLoaders.get(appRef)?.refs.forEach((ref) => ref.destroy());
-        appsWithLoaders.delete(appRef);
-      });
-    }
-    if (!data.loaders.has(loader)) {
-      data.loaders.add(loader);
-      data.refs.push(createComponent(loader, {
-        environmentInjector: this._environmentInjector
-      }));
-    }
-  }
-  static ɵfac = function _CdkPrivateStyleLoader_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || __CdkPrivateStyleLoader)();
-  };
-  static ɵprov = ɵɵdefineInjectable({
-    token: __CdkPrivateStyleLoader,
-    factory: __CdkPrivateStyleLoader.ɵfac,
-    providedIn: "root"
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(_CdkPrivateStyleLoader, [{
-    type: Injectable,
-    args: [{
-      providedIn: "root"
-    }]
-  }], null, null);
-})();
-
 // node_modules/@angular/cdk/fesm2022/private.mjs
 var _VisuallyHiddenLoader = class __VisuallyHiddenLoader {
   static ɵfac = function _VisuallyHiddenLoader_Factory(__ngFactoryType__) {
@@ -954,6 +906,183 @@ var ObserversModule = class _ObserversModule {
     }]
   }], null, null);
 })();
+
+// node_modules/@angular/cdk/fesm2022/array.mjs
+function coerceArray(value) {
+  return Array.isArray(value) ? value : [value];
+}
+
+// node_modules/@angular/cdk/fesm2022/breakpoints-observer.mjs
+var mediaQueriesForWebkitCompatibility = /* @__PURE__ */ new Set();
+var mediaQueryStyleNode;
+var MediaMatcher = class _MediaMatcher {
+  _platform = inject(Platform);
+  _nonce = inject(CSP_NONCE, {
+    optional: true
+  });
+  /** The internal matchMedia method to return back a MediaQueryList like object. */
+  _matchMedia;
+  constructor() {
+    this._matchMedia = this._platform.isBrowser && window.matchMedia ? (
+      // matchMedia is bound to the window scope intentionally as it is an illegal invocation to
+      // call it from a different scope.
+      window.matchMedia.bind(window)
+    ) : noopMatchMedia;
+  }
+  /**
+   * Evaluates the given media query and returns the native MediaQueryList from which results
+   * can be retrieved.
+   * Confirms the layout engine will trigger for the selector query provided and returns the
+   * MediaQueryList for the query provided.
+   */
+  matchMedia(query) {
+    if (this._platform.WEBKIT || this._platform.BLINK) {
+      createEmptyStyleRule(query, this._nonce);
+    }
+    return this._matchMedia(query);
+  }
+  static ɵfac = function MediaMatcher_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _MediaMatcher)();
+  };
+  static ɵprov = ɵɵdefineInjectable({
+    token: _MediaMatcher,
+    factory: _MediaMatcher.ɵfac,
+    providedIn: "root"
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MediaMatcher, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [], null);
+})();
+function createEmptyStyleRule(query, nonce) {
+  if (mediaQueriesForWebkitCompatibility.has(query)) {
+    return;
+  }
+  try {
+    if (!mediaQueryStyleNode) {
+      mediaQueryStyleNode = document.createElement("style");
+      if (nonce) {
+        mediaQueryStyleNode.setAttribute("nonce", nonce);
+      }
+      mediaQueryStyleNode.setAttribute("type", "text/css");
+      document.head.appendChild(mediaQueryStyleNode);
+    }
+    if (mediaQueryStyleNode.sheet) {
+      mediaQueryStyleNode.sheet.insertRule(`@media ${query} {body{ }}`, 0);
+      mediaQueriesForWebkitCompatibility.add(query);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+function noopMatchMedia(query) {
+  return {
+    matches: query === "all" || query === "",
+    media: query,
+    addListener: () => {
+    },
+    removeListener: () => {
+    }
+  };
+}
+var BreakpointObserver = class _BreakpointObserver {
+  _mediaMatcher = inject(MediaMatcher);
+  _zone = inject(NgZone);
+  /**  A map of all media queries currently being listened for. */
+  _queries = /* @__PURE__ */ new Map();
+  /** A subject for all other observables to takeUntil based on. */
+  _destroySubject = new Subject();
+  constructor() {
+  }
+  /** Completes the active subject, signalling to all other observables to complete. */
+  ngOnDestroy() {
+    this._destroySubject.next();
+    this._destroySubject.complete();
+  }
+  /**
+   * Whether one or more media queries match the current viewport size.
+   * @param value One or more media queries to check.
+   * @returns Whether any of the media queries match.
+   */
+  isMatched(value) {
+    const queries = splitQueries(coerceArray(value));
+    return queries.some((mediaQuery) => this._registerQuery(mediaQuery).mql.matches);
+  }
+  /**
+   * Gets an observable of results for the given queries that will emit new results for any changes
+   * in matching of the given queries.
+   * @param value One or more media queries to check.
+   * @returns A stream of matches for the given queries.
+   */
+  observe(value) {
+    const queries = splitQueries(coerceArray(value));
+    const observables = queries.map((query) => this._registerQuery(query).observable);
+    let stateObservable = combineLatest(observables);
+    stateObservable = concat(stateObservable.pipe(take(1)), stateObservable.pipe(skip(1), debounceTime(0)));
+    return stateObservable.pipe(map((breakpointStates) => {
+      const response = {
+        matches: false,
+        breakpoints: {}
+      };
+      breakpointStates.forEach(({
+        matches,
+        query
+      }) => {
+        response.matches = response.matches || matches;
+        response.breakpoints[query] = matches;
+      });
+      return response;
+    }));
+  }
+  /** Registers a specific query to be listened for. */
+  _registerQuery(query) {
+    if (this._queries.has(query)) {
+      return this._queries.get(query);
+    }
+    const mql = this._mediaMatcher.matchMedia(query);
+    const queryObservable = new Observable((observer) => {
+      const handler = (e) => this._zone.run(() => observer.next(e));
+      mql.addListener(handler);
+      return () => {
+        mql.removeListener(handler);
+      };
+    }).pipe(startWith(mql), map(({
+      matches
+    }) => ({
+      query,
+      matches
+    })), takeUntil(this._destroySubject));
+    const output = {
+      observable: queryObservable,
+      mql
+    };
+    this._queries.set(query, output);
+    return output;
+  }
+  static ɵfac = function BreakpointObserver_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _BreakpointObserver)();
+  };
+  static ɵprov = ɵɵdefineInjectable({
+    token: _BreakpointObserver,
+    factory: _BreakpointObserver.ɵfac,
+    providedIn: "root"
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(BreakpointObserver, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [], null);
+})();
+function splitQueries(queries) {
+  return queries.map((query) => query.split(",")).reduce((a1, a2) => a1.concat(a2)).map((query) => query.trim());
+}
 
 // node_modules/@angular/cdk/fesm2022/a11y-module.mjs
 var InteractivityChecker = class _InteractivityChecker {
@@ -1797,6 +1926,41 @@ var A11yModule = class _A11yModule {
   }], () => [], null);
 })();
 
+// node_modules/@angular/cdk/fesm2022/id-generator.mjs
+var counters = {};
+var _IdGenerator = class __IdGenerator {
+  _appId = inject(APP_ID);
+  /**
+   * Generates a unique ID with a specific prefix.
+   * @param prefix Prefix to add to the ID.
+   */
+  getId(prefix) {
+    if (this._appId !== "ng") {
+      prefix += this._appId;
+    }
+    if (!counters.hasOwnProperty(prefix)) {
+      counters[prefix] = 0;
+    }
+    return `${prefix}${counters[prefix]++}`;
+  }
+  static ɵfac = function _IdGenerator_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || __IdGenerator)();
+  };
+  static ɵprov = ɵɵdefineInjectable({
+    token: __IdGenerator,
+    factory: __IdGenerator.ɵfac,
+    providedIn: "root"
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(_IdGenerator, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], null, null);
+})();
+
 // node_modules/@angular/cdk/fesm2022/keycodes.mjs
 function hasModifierKey(event, ...modifiers) {
   if (modifiers.length) {
@@ -2219,41 +2383,6 @@ var FocusKeyManager = class extends ListKeyManager {
     }
   }
 };
-
-// node_modules/@angular/cdk/fesm2022/id-generator.mjs
-var counters = {};
-var _IdGenerator = class __IdGenerator {
-  _appId = inject(APP_ID);
-  /**
-   * Generates a unique ID with a specific prefix.
-   * @param prefix Prefix to add to the ID.
-   */
-  getId(prefix) {
-    if (this._appId !== "ng") {
-      prefix += this._appId;
-    }
-    if (!counters.hasOwnProperty(prefix)) {
-      counters[prefix] = 0;
-    }
-    return `${prefix}${counters[prefix]++}`;
-  }
-  static ɵfac = function _IdGenerator_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || __IdGenerator)();
-  };
-  static ɵprov = ɵɵdefineInjectable({
-    token: __IdGenerator,
-    factory: __IdGenerator.ɵfac,
-    providedIn: "root"
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(_IdGenerator, [{
-    type: Injectable,
-    args: [{
-      providedIn: "root"
-    }]
-  }], null, null);
-})();
 
 // node_modules/@angular/cdk/fesm2022/coercion/private.mjs
 function coerceObservable(data) {
@@ -2977,21 +3106,30 @@ var MatCommonModule = class _MatCommonModule {
 export {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
+  BACKSPACE,
+  TAB,
   ENTER,
   ESCAPE,
   SPACE,
+  LEFT_ARROW,
+  UP_ARROW,
+  RIGHT_ARROW,
+  DOWN_ARROW,
+  DELETE,
   A,
   _getFocusedElementPierceShadowDom,
   _getEventTarget,
   normalizePassiveListenerOptions,
   FocusMonitor,
-  _CdkPrivateStyleLoader,
+  _VisuallyHiddenLoader,
+  MediaMatcher,
   CdkObserveContent,
   ObserversModule,
   InteractivityChecker,
   FocusTrapFactory,
+  _IdGenerator,
   hasModifierKey,
   FocusKeyManager,
   MatCommonModule
 };
-//# sourceMappingURL=chunk-YEI42LA7.js.map
+//# sourceMappingURL=chunk-QHANBIZL.js.map

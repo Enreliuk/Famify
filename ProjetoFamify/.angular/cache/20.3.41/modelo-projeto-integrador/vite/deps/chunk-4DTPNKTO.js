@@ -1,20 +1,20 @@
 import {
   _animationsDisabled
-} from "./chunk-Z74JKY7V.js";
+} from "./chunk-VOO7DMDJ.js";
 import {
   MatCommonModule,
-  _CdkPrivateStyleLoader,
   _getEventTarget,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   normalizePassiveListenerOptions
-} from "./chunk-YEI42LA7.js";
+} from "./chunk-QHANBIZL.js";
 import {
+  _CdkPrivateStyleLoader
+} from "./chunk-VA223NVT.js";
+import {
+  Platform,
   coerceElement
-} from "./chunk-VNBHVFUA.js";
-import {
-  Platform
-} from "./chunk-T3HAY2SG.js";
+} from "./chunk-L2PK47EN.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -670,7 +670,8 @@ export {
   defaultRippleAnimationConfig,
   RippleRenderer,
   MAT_RIPPLE_GLOBAL_OPTIONS,
+  MatRipple,
   _StructuralStylesLoader,
   MatRippleModule
 };
-//# sourceMappingURL=chunk-EM4N2Z5Z.js.map
+//# sourceMappingURL=chunk-4DTPNKTO.js.map

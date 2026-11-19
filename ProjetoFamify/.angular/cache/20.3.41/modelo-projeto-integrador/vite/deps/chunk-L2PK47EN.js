@@ -2,12 +2,27 @@ import {
   isPlatformBrowser
 } from "./chunk-WWSC6R7F.js";
 import {
+  ElementRef,
   Injectable,
   PLATFORM_ID,
   inject,
   setClassMetadata,
   ɵɵdefineInjectable
 } from "./chunk-TBQC3CLN.js";
+
+// node_modules/@angular/cdk/fesm2022/element.mjs
+function coerceNumberProperty(value, fallbackValue = 0) {
+  if (_isNumberValue(value)) {
+    return Number(value);
+  }
+  return arguments.length === 2 ? fallbackValue : 0;
+}
+function _isNumberValue(value) {
+  return !isNaN(parseFloat(value)) && !isNaN(Number(value));
+}
+function coerceElement(elementOrRef) {
+  return elementOrRef instanceof ElementRef ? elementOrRef.nativeElement : elementOrRef;
+}
 
 // node_modules/@angular/cdk/fesm2022/platform2.mjs
 var hasV8BreakIterator;
@@ -71,6 +86,8 @@ var Platform = class _Platform {
 })();
 
 export {
+  coerceNumberProperty,
+  coerceElement,
   Platform
 };
-//# sourceMappingURL=chunk-T3HAY2SG.js.map
+//# sourceMappingURL=chunk-L2PK47EN.js.map
