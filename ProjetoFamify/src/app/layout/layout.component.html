@@ -1,10 +1,10 @@
 <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
 <div class="estrutura">
-  <mat-toolbar class="topo">
+  <mat-toolbar class="topo" *ngIf="!esconderTopo">
     <a class="logo" routerLink="/inicio" aria-label="Famify — página inicial">
       <span class="logo-simbolo"><mat-icon>groups</mat-icon></span>
-      <span>famify</span>
+      <span>{{ nomeSistema }}</span>
     </a>
 
     <nav class="nav-links" aria-label="Navegação principal">
@@ -54,7 +54,6 @@
     <a class="rodape-logo" routerLink="/inicio">
       <mat-icon>groups</mat-icon> famify
     </a>
-    <span>Conectando jogadores. Compartilhando boas histórias.</span>
-    <span>Famify — Matchmaking de Famílias Steam</span>
+    <span>Matchmaking de Famílias Steam</span>
   </footer>
 </div>

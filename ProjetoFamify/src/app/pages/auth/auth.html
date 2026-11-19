@@ -1,17 +1,16 @@
 <div class="auth-container">
   <mat-card class="auth-card" appearance="outlined">
     <mat-card-content>
+      <div class="auth-voltar">
+        <a mat-button routerLink="/inicio" class="btn-voltar-inicio">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Voltar para o início</span>
+        </a>
+      </div>
+
       <header class="auth-header">
         <span class="auth-mark"><mat-icon>groups</mat-icon></span>
-        <span class="section-eyebrow">Bom ter você por aqui</span>
         <h1>{{ modoCadastro ? 'Crie sua conta' : 'Bem-vindo de volta' }}</h1>
-        <p>
-          {{
-            modoCadastro
-              ? 'Crie seu perfil para encontrar uma família com os mesmos interesses.'
-              : 'Entre para gerenciar suas solicitações e encontrar sua próxima família.'
-          }}
-        </p>
       </header>
 
       <button
@@ -101,7 +100,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Jogos que deseja jogar</mat-label>
+            <mat-label>Jogos que deseja (opcional)</mat-label>
             <mat-icon matPrefix>sports_esports</mat-icon>
             <input
               matInput

@@ -17,7 +17,9 @@
   --famify-danger-surface: #3b2029;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
