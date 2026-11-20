@@ -19,12 +19,22 @@ Se optar por alterar dependências, utilize `npm install` para atualizar o arqui
 
 ## O que observar
 
-- Menu com **Início** e **Projetos**, com indicação da página ativa.
+- Menu com **Início**, **Encontrar família** e **Gerenciar**, com indicação da página ativa.
 - Cabeçalho com o nome do software e usuário fictício. Não há autenticação.
 - O menu e o cabeçalho ficam no layout. O `router-outlet` troca apenas a página de conteúdo.
 - Em telas menores que 768 px, o menu vira uma sobreposição, aberta pelo botão do cabeçalho, e fecha ao escolher uma página.
 - As páginas usam dados locais persistidos pelos serviços Angular no `localStorage`. Não há API ou banco externo nesta etapa.
 - O tema é local e não depende de Google Fonts nem de uma fonte externa de ícones.
+- A aba **Gerenciar (Demo)** só aparece para a conta administrativa.
+
+## Conta administrativa
+
+Use as seguintes credenciais somente nesta demonstração local:
+
+- E-mail: `adm@famify.com.br`
+- Senha: `123123`
+
+A conta é criada ou atualizada pelo `AuthService` durante o login administrativo. O link de gerenciamento só é exibido quando essa conta está ativa na sessão e a rota `/admin` possui proteção por guard. Outros usuários são redirecionados para a página inicial ao tentar acessar `/admin` diretamente.
 
 ## Serviços e persistência local
 
@@ -42,6 +52,39 @@ Cada entidade principal possui seu próprio serviço:
 Os componentes não devem acessar o `localStorage` diretamente. Eles chamam os serviços correspondentes, que validam as operações e atualizam os dados observáveis utilizados pelas telas. Os serviços também centralizam dados iniciais para que o projeto já seja executável sem API.
 
 As informações ficam disponíveis apenas no navegador utilizado pelo usuário. Por isso, login, usuários, famílias, jogos, gêneros e solicitações não são compartilhados entre dispositivos ou navegadores diferentes.
+
+## Área administrativa
+
+A rota `/admin` permite executar o CRUD completo das entidades principais sem back-end:
+
+- Usuários: cadastrar, consultar, editar e excluir.
+- Famílias: cadastrar, consultar, editar e excluir.
+- Jogos: cadastrar, consultar, editar e excluir.
+- Gêneros: cadastrar, consultar e excluir.
+- Solicitações: consultar, aprovar, rejeitar e excluir.
+
+Os formulários exibem estados fictícios de carregamento, mensagens de sucesso e mensagens de erro. A aprovação de solicitação atualiza a ocupação da família e respeita o limite máximo de seis membros.
+
+## Dashboard e fluxo principal
+
+Os indicadores da página inicial são calculados a partir dos dados cadastrados nos serviços locais. A página permite pesquisar famílias, aplicar filtros por gênero, consultar vagas e enviar ou cancelar solicitações.
+
+## Recursos simulados e testes
+
+Os seguintes recursos são representações locais e não devem ser considerados integração real:
+
+- Login e sessão local, sem segurança server-side.
+- OAuth da Steam e validação do Steam ID.
+- Dados compartilhados entre usuários ou dispositivos.
+- Comunicação com uma API externa.
+
+As regras críticas estão cobertas por testes em `src/app/services/regras-negocio.spec.ts`, incluindo limite de membros, vagas, duplicidade de solicitações e cálculo de ocupação.
+
+Execute os testes com:
+
+```bash
+npm test
+```
 
 ## Arquivos para estudar
 

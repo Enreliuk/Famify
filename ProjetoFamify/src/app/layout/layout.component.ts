@@ -18,6 +18,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   usuario: string = '';
   iniciaisUsuario: string = 'JS';
   usuarioLogado: boolean = false;
+  usuarioAdministrador: boolean = false;
   esconderTopo: boolean = false;
 
   private subscriptions = new Subscription();
@@ -29,10 +30,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
       this.authService.usuarioAtual$.subscribe(user => {
         if (user) {
           this.usuarioLogado = true;
+          this.usuarioAdministrador = user.email.toLowerCase() === 'adm@famify.com.br';
           this.usuario = user.nome;
           this.iniciaisUsuario = user.nome.substring(0, 2).toUpperCase();
         } else {
           this.usuarioLogado = false;
+          this.usuarioAdministrador = false;
           this.usuario = '';
         }
       })

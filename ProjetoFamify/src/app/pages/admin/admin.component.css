@@ -1,0 +1,30 @@
+:host { display: block; }
+.admin-page { max-width: 1180px; margin: 0 auto; padding: 2.5rem clamp(1rem, 4vw, 3rem) 4rem; }
+header h1 { margin: .25rem 0 .35rem; }
+header p { color: var(--famify-muted); }
+.eyebrow { color: var(--famify-magenta); text-transform: uppercase; font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
+.alerta { margin: 1rem 0; padding: .8rem 1rem; border-radius: 10px; }
+.erro { background: var(--famify-danger-surface); color: var(--famify-danger); }
+.sucesso { background: var(--famify-positive-surface); color: var(--famify-positive); }
+.carregando { margin: 2rem 0; color: var(--famify-muted); }
+.abas { display: flex; gap: .5rem; overflow-x: auto; border-bottom: 1px solid var(--famify-border); }
+.abas button { border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--famify-muted); padding: .8rem 1rem; white-space: nowrap; cursor: pointer; }
+.abas button.ativa { color: var(--famify-magenta); border-bottom-color: var(--famify-magenta); }
+.painel { padding-top: 1.5rem; }
+.painel h2 { margin-top: 0; }
+.formulario { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin-bottom: 1.5rem; }
+.formulario input { min-width: 0; width: 100%; border: 1px solid var(--famify-border); border-radius: 10px; background: var(--famify-surface); color: var(--famify-ink); padding: .8rem; }
+.formulario button, .acoes button { border: 0; border-radius: 9px; padding: .65rem .9rem; background: var(--famify-violet); color: #17131d; font-weight: 800; cursor: pointer; }
+.lista { display: grid; gap: .65rem; }
+.lista article { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border: 1px solid var(--famify-border); border-radius: 12px; background: var(--famify-surface); padding: .85rem 1rem; }
+.lista article div:first-child { display: grid; gap: .2rem; }
+.lista article span { color: var(--famify-muted); font-size: .82rem; }
+.acoes { display: flex; flex-wrap: wrap; gap: .45rem; }
+.acoes button { background: var(--famify-surface-high); color: var(--famify-ink); }
+.acoes button.perigo { background: var(--famify-danger-surface); color: var(--famify-danger); }
+.acoes button:disabled { opacity: .45; cursor: not-allowed; }
+@media (max-width: 650px) {
+  .formulario { grid-template-columns: 1fr; }
+  .lista article { align-items: flex-start; flex-direction: column; }
+  .admin-page { padding-top: 1.5rem; }
+}

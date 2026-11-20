@@ -33,6 +33,8 @@ import { AuthService } from '../../services/auth';
 export class MatchComponent implements OnInit {
   termoFiltro: string = '';
   generoSelecionado: string = 'Todos';
+  carregando = true;
+  mensagemErro = '';
 
   generosDisponiveis: string[] = [];
   familias: FamiliaSteam[] = [];
@@ -47,18 +49,27 @@ export class MatchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.familias = this.familiaService.listar();
-    this.generosDisponiveis = this.generoService.listar();
-    this.familiaService.familias$.subscribe(familias => this.familias = familias);
-    this.authService.usuarioAtual$.subscribe(usuario => {
-      this.usuarioId = usuario?.id ?? null;
-    });
+    window.setTimeout(() => {
+      try {
+        this.familias = this.familiaService.listar();
+        this.generosDisponiveis = this.generoService.listar();
+        this.familiaService.familias$.subscribe(familias => this.familias = familias);
+        this.authService.usuarioAtual$.subscribe(usuario => {
+          this.usuarioId = usuario?.id ?? null;
+        });
+        this.sincronizarSolicitacoes();
 
-    this.route.queryParams.subscribe(params => {
-      if (params['q']) {
-        this.termoFiltro = params['q'];
+        this.route.queryParams.subscribe(params => {
+          if (params['q']) {
+            this.termoFiltro = params['q'];
+          }
+        });
+      } catch (erro) {
+        this.mensagemErro = erro instanceof Error ? erro.message : 'Não foi possível carregar famílias.';
+      } finally {
+        this.carregando = false;
       }
-    });
+    }, 200);
   }
 
   selecionarGenero(genero: string): void {
@@ -88,19 +99,40 @@ export class MatchComponent implements OnInit {
   }
 
   solicitarEntrada(familia: FamiliaSteam): void {
-    familia.solicitado = !familia.solicitado;
-    if (this.usuarioId && familia.solicitado) {
-      this.solicitacaoService.solicitar(this.usuarioId, familia.id);
-    } else if (this.usuarioId && !familia.solicitado) {
-      const pendente = this.solicitacaoService.listar().find(solicitacao =>
-        solicitacao.usuarioId === this.usuarioId &&
-        solicitacao.familiaId === familia.id &&
-        solicitacao.status === 'pendente'
-      );
-      if (pendente) {
-        this.solicitacaoService.cancelar(pendente.id);
+    try {
+      if (!this.usuarioId) {
+        throw new Error('Entre ou crie uma conta antes de solicitar entrada em uma família.');
       }
+      familia.solicitado = !familia.solicitado;
+      if (familia.solicitado) {
+        this.solicitacaoService.solicitar(this.usuarioId, familia.id);
+      } else {
+        const pendente = this.solicitacaoService.listar().find(solicitacao =>
+          solicitacao.usuarioId === this.usuarioId &&
+          solicitacao.familiaId === familia.id &&
+          solicitacao.status === 'pendente'
+        );
+        if (pendente) {
+          this.solicitacaoService.cancelar(pendente.id);
+        }
+      }
+      this.mensagemErro = '';
+    } catch (erro) {
+      familia.solicitado = false;
+      this.mensagemErro = erro instanceof Error ? erro.message : 'Não foi possível enviar a solicitação.';
     }
+  }
+
+  private sincronizarSolicitacoes(): void {
+    if (!this.usuarioId) {
+      return;
+    }
+    const pendentes = this.solicitacaoService.listarPorUsuario(this.usuarioId)
+      .filter(solicitacao => solicitacao.status === 'pendente');
+    this.familias = this.familias.map(familia => ({
+      ...familia,
+      solicitado: pendentes.some(solicitacao => solicitacao.familiaId === familia.id)
+    }));
   }
 
   calcularPorcentagemOcupacao(familia: FamiliaSteam): number {

@@ -1,0 +1,104 @@
+<section class="admin-page">
+  <header>
+    <div>
+      <span class="eyebrow">Área operacional</span>
+    </div>
+  </header>
+
+  <div class="alerta erro" *ngIf="mensagemErro">{{ mensagemErro }}</div>
+  <div class="alerta sucesso" *ngIf="mensagemSucesso">{{ mensagemSucesso }}</div>
+  <div class="carregando" *ngIf="carregando">Carregando dados locais...</div>
+
+  <nav class="abas" aria-label="Entidades">
+    <button type="button" [class.ativa]="abaAtiva === 'usuarios'" (click)="selecionarAba('usuarios')">Usuários</button>
+    <button type="button" [class.ativa]="abaAtiva === 'familias'" (click)="selecionarAba('familias')">Famílias</button>
+    <button type="button" [class.ativa]="abaAtiva === 'jogos'" (click)="selecionarAba('jogos')">Jogos</button>
+    <button type="button" [class.ativa]="abaAtiva === 'generos'" (click)="selecionarAba('generos')">Gêneros</button>
+    <button type="button" [class.ativa]="abaAtiva === 'solicitacoes'" (click)="selecionarAba('solicitacoes')">Solicitações</button>
+  </nav>
+
+  <div class="painel" *ngIf="!carregando">
+    <ng-container *ngIf="abaAtiva === 'usuarios'">
+      <h2>{{ usuarioEditando ? 'Editar usuário' : 'Novo usuário' }}</h2>
+      <form class="formulario" (ngSubmit)="salvarUsuario()">
+        <input [(ngModel)]="usuarioForm.nome" name="nomeUsuario" placeholder="Nome" required />
+        <input [(ngModel)]="usuarioForm.email" name="emailUsuario" type="email" placeholder="E-mail" required />
+        <input [(ngModel)]="usuarioForm.senha" name="senhaUsuario" type="password" placeholder="Senha" />
+        <input [(ngModel)]="usuarioForm.steamId" name="steamUsuario" placeholder="Steam ID" />
+        <input [(ngModel)]="usuarioForm.jogosImportados" name="jogosUsuario" type="number" min="0" placeholder="Jogos importados" />
+        <button type="submit">{{ usuarioEditando ? 'Atualizar usuário' : 'Cadastrar usuário' }}</button>
+      </form>
+      <div class="lista">
+        <article *ngFor="let usuario of usuarios">
+          <div><strong>{{ usuario.nome }}</strong><span>{{ usuario.email }} · {{ usuario.jogosImportados }} jogos</span></div>
+          <div class="acoes"><button type="button" (click)="editarUsuario(usuario)">Editar</button><button type="button" class="perigo" (click)="excluirUsuario(usuario.id)">Excluir</button></div>
+        </article>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="abaAtiva === 'familias'">
+      <h2>{{ familiaEditando ? 'Editar família' : 'Nova família' }}</h2>
+      <form class="formulario" (ngSubmit)="salvarFamilia()">
+        <input [(ngModel)]="familiaForm.nome" name="nomeFamilia" placeholder="Nome" required />
+        <input [(ngModel)]="familiaForm.descricao" name="descricaoFamilia" placeholder="Descrição" />
+        <input [(ngModel)]="familiaForm.membrosAtuais" name="membrosFamilia" type="number" min="0" max="6" />
+        <input [(ngModel)]="familiaForm.limiteMembros" name="limiteFamilia" type="number" min="1" max="6" />
+        <input [(ngModel)]="familiaForm.totalJogos" name="jogosFamilia" type="number" min="0" />
+        <input [(ngModel)]="generosFamilia" name="generosFamilia" placeholder="Gêneros separados por vírgula" />
+        <button type="submit">{{ familiaEditando ? 'Atualizar família' : 'Cadastrar família' }}</button>
+      </form>
+      <div class="lista">
+        <article *ngFor="let familia of familias">
+          <div><strong>{{ familia.nome }}</strong><span>{{ familia.membrosAtuais }}/{{ familia.limiteMembros }} membros · {{ familia.generos.join(', ') }}</span></div>
+          <div class="acoes"><button type="button" (click)="editarFamilia(familia)">Editar</button><button type="button" class="perigo" (click)="excluirFamilia(familia.id)">Excluir</button></div>
+        </article>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="abaAtiva === 'jogos'">
+      <h2>{{ jogoEditando ? 'Editar jogo' : 'Novo jogo' }}</h2>
+      <form class="formulario" (ngSubmit)="salvarJogo()">
+        <input [(ngModel)]="jogoForm.titulo" name="tituloJogo" placeholder="Título" required />
+        <input [(ngModel)]="jogoForm.imagemUrl" name="imagemJogo" placeholder="URL da imagem" />
+        <input [(ngModel)]="jogoForm.crescimento" name="crescimentoJogo" placeholder="Crescimento" />
+        <input [(ngModel)]="jogoForm.buscasSemana" name="buscasJogo" placeholder="Buscas na semana" />
+        <button type="submit">{{ jogoEditando ? 'Atualizar jogo' : 'Cadastrar jogo' }}</button>
+      </form>
+      <div class="lista">
+        <article *ngFor="let jogo of jogos">
+          <div><strong>{{ jogo.titulo }}</strong><span>{{ jogo.buscasSemana || 'Sem métricas simuladas' }}</span></div>
+          <div class="acoes"><button type="button" (click)="editarJogo(jogo)">Editar</button><button type="button" class="perigo" (click)="excluirJogo(jogo.id)">Excluir</button></div>
+        </article>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="abaAtiva === 'generos'">
+      <h2>Gêneros</h2>
+      <form class="formulario" (ngSubmit)="salvarGenero()">
+        <input [(ngModel)]="generoForm" name="nomeGenero" placeholder="Novo gênero" />
+        <button type="submit">Cadastrar gênero</button>
+      </form>
+      <div class="lista">
+        <article *ngFor="let genero of generos">
+          <div><strong>{{ genero }}</strong></div>
+          <div class="acoes"><button type="button" class="perigo" [disabled]="genero === 'Todos'" (click)="excluirGenero(genero)">Excluir</button></div>
+        </article>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="abaAtiva === 'solicitacoes'">
+      <h2>Solicitações</h2>
+      <div class="lista">
+        <article *ngFor="let solicitacao of solicitacoes">
+          <div><strong>Usuário {{ solicitacao.usuarioId }} · Família {{ solicitacao.familiaId }}</strong><span>{{ solicitacao.status }} · {{ solicitacao.criadaEm | date:'short' }}</span></div>
+          <div class="acoes">
+            <button type="button" [disabled]="solicitacao.status !== 'pendente'" (click)="alterarSolicitacao(solicitacao, 'aprovada')">Aprovar</button>
+            <button type="button" [disabled]="solicitacao.status !== 'pendente'" (click)="alterarSolicitacao(solicitacao, 'rejeitada')">Rejeitar</button>
+            <button type="button" class="perigo" (click)="excluirSolicitacao(solicitacao.id)">Excluir</button>
+          </div>
+        </article>
+        <p *ngIf="solicitacoes.length === 0">Nenhuma solicitação cadastrada.</p>
+      </div>
+    </ng-container>
+  </div>
+</section>

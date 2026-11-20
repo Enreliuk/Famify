@@ -36,6 +36,8 @@ interface Metrica {
 })
 export class InicioComponent implements OnInit {
   termoBusca: string = '';
+  carregando = true;
+  mensagemErro = '';
 
   metricas: Metrica[] = [];
   jogosMaisProcurados: Jogo[] = [];
@@ -49,16 +51,24 @@ export class InicioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.jogosMaisProcurados = this.jogoService.listar();
-    this.atualizarMetricas();
+    window.setTimeout(() => {
+      try {
+        this.jogosMaisProcurados = this.jogoService.listar();
+        this.atualizarMetricas();
 
-    this.familiaService.familias$.subscribe(() => this.atualizarMetricas());
-    this.jogoService.jogos$.subscribe(jogos => {
-      this.jogosMaisProcurados = jogos;
-      this.atualizarMetricas();
-    });
-    this.usuarioService.usuarios$.subscribe(() => this.atualizarMetricas());
-    this.solicitacaoService.solicitacoes$.subscribe(() => this.atualizarMetricas());
+        this.familiaService.familias$.subscribe(() => this.atualizarMetricas());
+        this.jogoService.jogos$.subscribe(jogos => {
+          this.jogosMaisProcurados = jogos;
+          this.atualizarMetricas();
+        });
+        this.usuarioService.usuarios$.subscribe(() => this.atualizarMetricas());
+        this.solicitacaoService.solicitacoes$.subscribe(() => this.atualizarMetricas());
+      } catch (erro) {
+        this.mensagemErro = erro instanceof Error ? erro.message : 'Não foi possível carregar o dashboard.';
+      } finally {
+        this.carregando = false;
+      }
+    }, 200);
   }
 
   private atualizarMetricas(): void {

@@ -9,6 +9,8 @@ export type { UsuarioFamify } from './usuario.service';
 })
 export class AuthService {
   private readonly STORAGE_SESSAO = 'famify_sessao_ativa';
+  private readonly ADMIN_EMAIL = 'adm@famify.com.br';
+  private readonly ADMIN_SENHA = '123123';
 
   private usuarioAtualSubject = new BehaviorSubject<UsuarioFamify | null>(
     this.carregarSessaoSalva()
@@ -24,6 +26,10 @@ export class AuthService {
     steamId: string;
     jogosDesejados: string;
   }): { sucesso: boolean; mensagem?: string } {
+    if (dados.email.trim().toLowerCase() === this.ADMIN_EMAIL) {
+      return { sucesso: false, mensagem: 'Este e-mail é reservado para o administrador.' };
+    }
+
     const jaExiste = this.usuarioService.buscarPorEmail(dados.email);
 
     if (jaExiste) {
@@ -44,6 +50,30 @@ export class AuthService {
   }
 
   login(email: string, senha: string): { sucesso: boolean; mensagem?: string } {
+    if (email.trim().toLowerCase() === this.ADMIN_EMAIL) {
+      if (senha !== this.ADMIN_SENHA) {
+        return { sucesso: false, mensagem: 'E-mail ou senha inválidos.' };
+      }
+
+      let administrador = this.usuarioService.buscarPorEmail(this.ADMIN_EMAIL);
+      if (!administrador) {
+        administrador = this.usuarioService.criar({
+          nome: 'Administrador',
+          email: this.ADMIN_EMAIL,
+          senha: this.ADMIN_SENHA,
+          steamId: '76561198000000000',
+          jogosImportados: 0,
+          jogosDesejados: ''
+        });
+      } else if (administrador.senha !== this.ADMIN_SENHA) {
+        this.usuarioService.atualizar({ ...administrador, senha: this.ADMIN_SENHA });
+        administrador = this.usuarioService.buscarPorEmail(this.ADMIN_EMAIL)!;
+      }
+
+      this.salvarSessao(administrador);
+      return { sucesso: true };
+    }
+
     const encontrado = this.usuarioService.buscarPorEmail(email);
 
     if (!encontrado || encontrado.senha !== senha) {
@@ -72,6 +102,11 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.STORAGE_SESSAO);
     this.usuarioAtualSubject.next(null);
+  }
+
+  isAdministrador(): boolean {
+    const usuario = this.carregarSessaoSalva();
+    return usuario?.email.toLowerCase() === this.ADMIN_EMAIL;
   }
 
   private salvarSessao(usuario: UsuarioFamify): void {

@@ -11,6 +11,12 @@
       <a mat-button routerLink="/match" routerLinkActive="ativo">Encontrar família</a>
       <a mat-button routerLink="/inicio" fragment="como-funciona">Como funciona</a>
       <a mat-button routerLink="/inicio" fragment="regras-steam">Regras Steam</a>
+      <a
+        *ngIf="usuarioAdministrador"
+        mat-button
+        routerLink="/admin"
+        routerLinkActive="ativo"
+      >Gerenciar (Demo)</a>
     </nav>
 
     <div class="topo-direita">

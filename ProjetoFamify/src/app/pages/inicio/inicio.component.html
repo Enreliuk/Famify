@@ -1,4 +1,6 @@
 <div class="famify-home">
+  <div class="alerta-erro" role="alert" *ngIf="mensagemErro">{{ mensagemErro }}</div>
+  <div class="carregando" *ngIf="carregando">Calculando indicadores locais...</div>
   <main class="hero-section">
     <div class="hero-glow hero-glow-um"></div>
     <div class="hero-glow hero-glow-dois"></div>

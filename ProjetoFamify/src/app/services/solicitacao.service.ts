@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { podeSolicitarEntrada } from './regras-negocio';
+import { FamiliaService } from './familia.service';
 
 export type StatusSolicitacao = 'pendente' | 'aprovada' | 'rejeitada';
 
@@ -17,6 +19,8 @@ export class SolicitacaoService {
   private readonly solicitacoesSubject = new BehaviorSubject<SolicitacaoFamilia[]>(this.listar());
   solicitacoes$ = this.solicitacoesSubject.asObservable();
 
+  constructor(private familiaService: FamiliaService) {}
+
   listar(): SolicitacaoFamilia[] {
     const dados = localStorage.getItem(this.storageKey);
     return dados ? JSON.parse(dados) : [];
@@ -28,6 +32,14 @@ export class SolicitacaoService {
 
   solicitar(usuarioId: number, familiaId: number): SolicitacaoFamilia | undefined {
     const solicitacoes = this.listar();
+    const familia = this.familiaService.buscarPorId(familiaId);
+    if (!familia) {
+      throw new Error('Família não encontrada.');
+    }
+    const erro = podeSolicitarEntrada(familia, solicitacoes, usuarioId);
+    if (erro) {
+      throw new Error(erro);
+    }
     const existente = solicitacoes.find(solicitacao =>
       solicitacao.usuarioId === usuarioId &&
       solicitacao.familiaId === familiaId &&
@@ -53,6 +65,25 @@ export class SolicitacaoService {
   }
 
   atualizarStatus(id: number, status: StatusSolicitacao): void {
+    const solicitacao = this.listar().find(item => item.id === id);
+    if (!solicitacao) {
+      throw new Error('Solicitação não encontrada.');
+    }
+
+    if (status === 'aprovada') {
+      const familia = this.familiaService.buscarPorId(solicitacao.familiaId);
+      if (!familia || familia.vagasDisponiveis <= 0) {
+        throw new Error('Não existe vaga disponível para aprovar esta solicitação.');
+      }
+      if (familia.membrosAtuais >= 6) {
+        throw new Error('O limite máximo de seis membros foi atingido.');
+      }
+      this.familiaService.atualizar({
+        ...familia,
+        membrosAtuais: familia.membrosAtuais + 1
+      });
+    }
+
     this.salvar(this.listar().map(solicitacao =>
       solicitacao.id === id ? { ...solicitacao, status } : solicitacao
     ));

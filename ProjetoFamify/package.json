@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test --watch=false"
   },
   "dependencies": {
     "@angular/animations": "~20.3.0",
@@ -27,7 +28,9 @@
     "@angular/cli": "~20.3.0",
     "@angular/compiler-cli": "~20.3.0",
     "angular-cli-ghpages": "^3.1.2",
-    "typescript": "~5.9.2"
+    "jsdom": "^31.0.1",
+    "typescript": "~5.9.2",
+    "vitest": "^3.2.7"
   },
   "engines": {
     "node": "^20.19.0 || ^22.12.0 || ^24.0.0"

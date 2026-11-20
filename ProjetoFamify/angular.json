@@ -66,6 +66,15 @@
         },
         "deploy": {
           "builder": "angular-cli-ghpages:deploy"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "modelo-projeto-integrador:build",
+            "tsConfig": "tsconfig.spec.json",
+            "runner": "vitest",
+            "watch": false
+          }
         }
       }
     }

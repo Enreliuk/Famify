@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { validarLimiteFamilia } from './regras-negocio';
 
 export interface JogoDestaqueFamilia {
   titulo: string;
@@ -109,6 +110,10 @@ export class FamiliaService {
   }
 
   criar(familia: Omit<FamiliaSteam, 'id'>): FamiliaSteam {
+    const erro = validarLimiteFamilia(familia.membrosAtuais, familia.limiteMembros);
+    if (erro) {
+      throw new Error(erro);
+    }
     const familias = this.listar();
     const novaFamilia = {
       ...familia,
@@ -119,8 +124,22 @@ export class FamiliaService {
   }
 
   atualizar(familiaAtualizada: FamiliaSteam): void {
+    const erro = validarLimiteFamilia(
+      familiaAtualizada.membrosAtuais,
+      familiaAtualizada.limiteMembros
+    );
+    if (erro) {
+      throw new Error(erro);
+    }
+    const familiaConsistente = {
+      ...familiaAtualizada,
+      vagasDisponiveis: Math.max(
+        0,
+        familiaAtualizada.limiteMembros - familiaAtualizada.membrosAtuais
+      )
+    };
     this.salvar(this.listar().map(familia =>
-      familia.id === familiaAtualizada.id ? familiaAtualizada : familia
+      familia.id === familiaConsistente.id ? familiaConsistente : familia
     ));
   }
 

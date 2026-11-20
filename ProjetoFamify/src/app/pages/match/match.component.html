@@ -1,4 +1,6 @@
 <div class="match-page">
+  <div class="alerta-erro" role="alert" *ngIf="mensagemErro">{{ mensagemErro }}</div>
+  <div class="carregando" *ngIf="carregando">Carregando famílias...</div>
   <header class="match-header">
     <div class="header-text">
       <h1>Encontre sua próxima família</h1>
