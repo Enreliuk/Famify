@@ -23,8 +23,25 @@ Se optar por alterar dependências, utilize `npm install` para atualizar o arqui
 - Cabeçalho com o nome do software e usuário fictício. Não há autenticação.
 - O menu e o cabeçalho ficam no layout. O `router-outlet` troca apenas a página de conteúdo.
 - Em telas menores que 768 px, o menu vira uma sobreposição, aberta pelo botão do cabeçalho, e fecha ao escolher uma página.
-- As páginas são simples e não persistem dados. Não há API, cadastro ou banco neste modelo.
+- As páginas usam dados locais persistidos pelos serviços Angular no `localStorage`. Não há API ou banco externo nesta etapa.
 - O tema é local e não depende de Google Fonts nem de uma fonte externa de ícones.
+
+## Serviços e persistência local
+
+Como o projeto não possui back-end nesta etapa, os dados são centralizados em serviços Angular e persistidos no `localStorage` do navegador.
+
+Cada entidade principal possui seu próprio serviço:
+
+- `UsuarioService`: cadastro, consulta, edição e exclusão de usuários.
+- `FamiliaService`: cadastro, consulta, edição e exclusão de famílias.
+- `JogoService`: cadastro, consulta, edição e exclusão de jogos.
+- `GeneroService`: cadastro, consulta, edição e exclusão de gêneros.
+- `SolicitacaoService`: envio, consulta, aprovação, rejeição e cancelamento de solicitações.
+- `AuthService`: sessão ativa e autenticação local simulada.
+
+Os componentes não devem acessar o `localStorage` diretamente. Eles chamam os serviços correspondentes, que validam as operações e atualizam os dados observáveis utilizados pelas telas. Os serviços também centralizam dados iniciais para que o projeto já seja executável sem API.
+
+As informações ficam disponíveis apenas no navegador utilizado pelo usuário. Por isso, login, usuários, famílias, jogos, gêneros e solicitações não são compartilhados entre dispositivos ou navegadores diferentes.
 
 ## Arquivos para estudar
 

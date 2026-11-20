@@ -11,7 +11,6 @@ import { AuthService } from '../../services/auth';
 export class AuthComponent {
   modoCadastro: boolean = false;
 
-  // Campos do formulário
   nome: string = '';
   email: string = '';
   senha: string = '';

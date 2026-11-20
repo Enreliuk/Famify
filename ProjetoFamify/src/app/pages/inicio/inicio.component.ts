@@ -8,18 +8,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
+import { FamiliaService } from '../../services/familia.service';
+import { JogoService, Jogo } from '../../services/jogo.service';
+import { UsuarioService } from '../../services/usuario.service';
+import { SolicitacaoService } from '../../services/solicitacao.service';
 
 interface Metrica {
   titulo: string;
   valor: string;
-}
-
-interface JogoEmAlta {
-  id: number;
-  titulo: string;
-  buscasSemana: string;
-  crescimento: string;
-  imagemUrl: string;
 }
 
 @Component({
@@ -41,55 +37,43 @@ interface JogoEmAlta {
 export class InicioComponent implements OnInit {
   termoBusca: string = '';
 
-  metricas: Metrica[] = [
-    { titulo: 'Famílias ativas', valor: '2.480' },
-    { titulo: 'Jogos disponíveis', valor: '12.300+' },
-    { titulo: 'Usuários', valor: '9.760' },
-    { titulo: 'Jogos economizados', valor: '38.900' }
-  ];
+  metricas: Metrica[] = [];
+  jogosMaisProcurados: Jogo[] = [];
 
-  jogosMaisProcurados = [
-  {
-    titulo: 'Elden Ring',
-    crescimento: '+139%',
-    buscasSemana: '15.400 buscas',
-    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg'
-  },
-  {
-    titulo: 'Cyberpunk 2077',
-    crescimento: '+84%',
-    buscasSemana: '11.200 buscas',
-    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg'
-  },
-  {
-    titulo: "Baldur's Gate 3",
-    crescimento: '+112%',
-    buscasSemana: '9.850 buscas',
-    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg'
-  },
-  {
-    titulo: 'The Witcher 3',
-    crescimento: '+45%',
-    buscasSemana: '7.430 buscas',
-    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg'
-  },
-  {
-    titulo: 'Valheim',
-    crescimento: '+30%',
-    buscasSemana: '6.120 buscas',
-    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/892970/header.jpg'
-  },
-  {
-    titulo: 'Red Dead Redemption 2',
-    crescimento: '+62%',
-    buscasSemana: '8.900 buscas',
-    imagemUrl: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg'
+  constructor(
+    private router: Router,
+    private familiaService: FamiliaService,
+    private jogoService: JogoService,
+    private usuarioService: UsuarioService,
+    private solicitacaoService: SolicitacaoService
+  ) {}
+
+  ngOnInit(): void {
+    this.jogosMaisProcurados = this.jogoService.listar();
+    this.atualizarMetricas();
+
+    this.familiaService.familias$.subscribe(() => this.atualizarMetricas());
+    this.jogoService.jogos$.subscribe(jogos => {
+      this.jogosMaisProcurados = jogos;
+      this.atualizarMetricas();
+    });
+    this.usuarioService.usuarios$.subscribe(() => this.atualizarMetricas());
+    this.solicitacaoService.solicitacoes$.subscribe(() => this.atualizarMetricas());
   }
-];
 
-  constructor(private router: Router) {}
+  private atualizarMetricas(): void {
+    const familias = this.familiaService.listar();
+    const jogos = this.jogoService.listar();
+    const usuarios = this.usuarioService.listar();
+    const solicitacoes = this.solicitacaoService.listar();
 
-  ngOnInit(): void {}
+    this.metricas = [
+      { titulo: 'Famílias ativas', valor: familias.filter(familia => familia.membrosAtuais > 0).length.toLocaleString('pt-BR') },
+      { titulo: 'Jogos disponíveis', valor: jogos.length.toLocaleString('pt-BR') },
+      { titulo: 'Usuários', valor: usuarios.length.toLocaleString('pt-BR') },
+      { titulo: 'Solicitações locais', valor: solicitacoes.length.toLocaleString('pt-BR') }
+    ];
+  }
 
   buscarFamilia(): void {
     this.router.navigate(['/match'], {
