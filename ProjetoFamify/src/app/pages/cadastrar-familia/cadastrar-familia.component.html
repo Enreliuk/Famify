@@ -1,0 +1,179 @@
+<section class="pagina-cadastrar-familia">
+  <div class="conteudo-pagina">
+    <header class="hero-cadastro">
+      <div class="hero-icone" aria-hidden="true">
+        <mat-icon>diversity_3</mat-icon>
+      </div>
+      <div class="hero-texto">
+        <p class="hero-kicker">Comunidade Famify</p>
+        <h1>Cadastrar família Steam</h1>
+        <p>
+          Já participa de uma família na Steam? Cadastre-a no Famify para que outros jogadores
+          encontrem seu grupo e solicitem entrada quando houver vagas disponíveis.
+        </p>
+      </div>
+    </header>
+
+    <mat-card class="card-cadastro">
+      <mat-card-content>
+        <div *ngIf="!usuarioLogado" class="aviso-login">
+          <mat-icon aria-hidden="true">lock</mat-icon>
+          <div class="aviso-login-conteudo">
+            <strong>Conecte sua conta para continuar</strong>
+            <p>É necessário estar autenticado para cadastrar uma família no Famify.</p>
+            <button mat-stroked-button type="button" (click)="irParaLogin()">
+              <mat-icon aria-hidden="true">login</mat-icon>
+              Ir para login
+            </button>
+          </div>
+        </div>
+
+        <form class="formulario-familia" (ngSubmit)="cadastrarFamilia()" #familiaForm="ngForm">
+          <section class="secao-formulario">
+            <div class="secao-cabecalho">
+              <mat-icon aria-hidden="true">badge</mat-icon>
+              <div>
+                <h2>Informações da família</h2>
+                <p>Defina como sua família será apresentada para outros jogadores.</p>
+              </div>
+            </div>
+
+            <div class="grid-campos">
+              <mat-form-field appearance="outline">
+                <mat-label>Nome da família</mat-label>
+                <input
+                  matInput
+                  name="nome"
+                  [(ngModel)]="formulario.nome"
+                  required
+                  maxlength="80"
+                  placeholder="Ex.: Família Nebulosa"
+                />
+                <mat-icon matPrefix aria-hidden="true">groups</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Total de jogos (opcional)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  name="totalJogos"
+                  [(ngModel)]="formulario.totalJogos"
+                />
+                <mat-icon matPrefix aria-hidden="true">sports_esports</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="campo-descricao">
+                <mat-label>Descrição</mat-label>
+                <textarea
+                  matInput
+                  name="descricao"
+                  [(ngModel)]="formulario.descricao"
+                  rows="4"
+                  maxlength="200"
+                  placeholder="Conte um pouco sobre os jogos, horários e o perfil da família"
+                ></textarea>
+                <mat-hint align="end">{{ (formulario.descricao || '').length }}/200</mat-hint>
+              </mat-form-field>
+            </div>
+          </section>
+
+          <section class="secao-formulario">
+            <div class="secao-cabecalho">
+              <mat-icon aria-hidden="true">group</mat-icon>
+              <div>
+                <h2>Membros e capacidade</h2>
+                <p>Informe quantos membros já participam e o limite da família Steam.</p>
+              </div>
+            </div>
+
+            <div class="grid-campos">
+              <mat-form-field appearance="outline">
+                <mat-label>Membros atuais</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  max="6"
+                  name="membrosAtuais"
+                  [(ngModel)]="formulario.membrosAtuais"
+                  required
+                />
+                <mat-icon matPrefix aria-hidden="true">person</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Limite de membros</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  max="6"
+                  name="limiteMembros"
+                  [(ngModel)]="formulario.limiteMembros"
+                  required
+                />
+                <mat-icon matPrefix aria-hidden="true">group_add</mat-icon>
+                <mat-hint>Famílias Steam comportam até 6 membros.</mat-hint>
+              </mat-form-field>
+
+              <div class="dica-capacidade" aria-live="polite">
+                <mat-icon aria-hidden="true">event_seat</mat-icon>
+                <span>
+                  Vagas disponíveis estimadas:
+                  <strong>{{ formulario.limiteMembros - formulario.membrosAtuais < 0 ? 0 : (formulario.limiteMembros - formulario.membrosAtuais) }}</strong>
+                </span>
+              </div>
+            </div>
+          </section>
+
+          <section class="secao-formulario">
+            <div class="secao-cabecalho">
+              <mat-icon aria-hidden="true">category</mat-icon>
+              <div>
+                <h2>Gêneros principais</h2>
+                <p>Selecione os estilos que melhor representam os jogos do grupo.</p>
+              </div>
+            </div>
+
+            <div class="grid-campos">
+              <mat-form-field appearance="outline" class="campo-generos">
+                <mat-label>Gêneros</mat-label>
+                <mat-select name="generos" [(ngModel)]="generosSelecionados" multiple>
+                  <mat-option *ngFor="let genero of generosDisponiveis" [value]="genero">
+                    {{ genero }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix aria-hidden="true">sell</mat-icon>
+                <mat-hint>Você pode selecionar mais de um gênero.</mat-hint>
+              </mat-form-field>
+            </div>
+          </section>
+
+          <div class="mensagens">
+            <div *ngIf="mensagemSucesso" class="mensagem sucesso" aria-live="polite">
+              <mat-icon aria-hidden="true">check_circle</mat-icon>
+              <span>{{ mensagemSucesso }}</span>
+            </div>
+            <div *ngIf="mensagemErro" class="mensagem erro" aria-live="assertive">
+              <mat-icon aria-hidden="true">error</mat-icon>
+              <span>{{ mensagemErro }}</span>
+            </div>
+          </div>
+
+          <div class="acoes">
+            <button mat-flat-button color="primary" class="btn-principal" type="submit" [disabled]="carregando">
+              <mat-icon aria-hidden="true">group_add</mat-icon>
+              <span>{{ carregando ? 'Cadastrando...' : 'Cadastrar família' }}</span>
+            </button>
+            <button mat-stroked-button type="button" (click)="irParaMatch()">
+              <mat-icon aria-hidden="true">search</mat-icon>
+              Ver famílias
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

@@ -26,6 +26,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 88px;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
@@ -33,13 +34,34 @@ body {
   margin: 0;
   background: var(--famify-background);
   color: var(--famify-ink);
-  font-family: Inter, Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 button,
-input {
+input,
+textarea,
+select {
   font: inherit;
+}
+
+.mat-typography,
+.mat-mdc-button-base,
+.mat-mdc-card,
+.mat-mdc-card-title,
+.mat-mdc-card-subtitle,
+.mat-mdc-form-field,
+.mat-mdc-select,
+.mat-mdc-option,
+.mat-mdc-menu-item,
+.mat-mdc-list-item,
+.mat-mdc-chip,
+.mat-toolbar,
+.mat-mdc-table,
+.mat-mdc-paginator,
+.mat-mdc-dialog-container,
+.mat-mdc-snack-bar-container {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .mat-mdc-form-field {

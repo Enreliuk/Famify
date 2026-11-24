@@ -1,146 +1,115 @@
-# Modelo de Projeto Integrador
-
-Projeto didático Angular 20 + Angular Material 20, com NgModules e componentes `standalone: false`.
-
 ## Executar
 
-1. Instale Node.js compatível: 20.19 ou superior da linha 20, 22.12 ou superior da linha 22, ou linha 24. Recomenda-se Node 22.12+.
-2. Extraia o ZIP e abra a pasta `modelo-projeto-integrador` no VS Code.
-3. No terminal dessa pasta, execute:
+### Pré-requisitos
+- **Node.js** compatível com o projeto: `^20.19.0 || ^22.12.0 || ^24.0.0` (conforme `engines` em [`package.json`](package.json)).
+- **npm** (incluído com o Node.js).
 
-```bash
-npm ci
-npm start
-```
+### Passos
+1. No diretório do frontend (`ProjetoFamify/`), instale as dependências:
+   ```bash
+   npm install
+   ```
+2. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm start
+   ```
+   (equivalente a `ng serve`)
+3. Acesse a aplicação no navegador (por padrão): `http://localhost:4200/#/inicio` ou em `http://enreliuk.github.io/Famify/#/inicio`
+   - O roteamento usa **hash** (`useHash: true`), então as rotas ficam no formato `/#/rota`.
 
-Acesse http://localhost:4200. Para encerrar, pressione Ctrl+C. Não é necessário instalar Angular CLI globalmente nem executar `ng add`: o Material já está configurado.
-
-Se optar por alterar dependências, utilize `npm install` para atualizar o arquivo de lock. Este é um projeto completo independente; não copie seu package.json por cima de um projeto já desenvolvido.
+### Outros comandos úteis
+- **Build:** `npm run build`
+- **Build em modo watch:** `npm run watch`
+- **Testes:** `npm test` (executa `ng test --watch=false`)
 
 ## O que observar
 
-- Menu com **Início**, **Encontrar família** e **Gerenciar**, com indicação da página ativa.
-- Cabeçalho com o nome do software e usuário fictício. Não há autenticação.
-- O menu e o cabeçalho ficam no layout. O `router-outlet` troca apenas a página de conteúdo.
-- Em telas menores que 768 px, o menu vira uma sobreposição, aberta pelo botão do cabeçalho, e fecha ao escolher uma página.
-- As páginas usam dados locais persistidos pelos serviços Angular no `localStorage`. Não há API ou banco externo nesta etapa.
-- O tema é local e não depende de Google Fonts nem de uma fonte externa de ícones.
-- A aba **Gerenciar (Demo)** só aparece para a conta administrativa.
+- **Layout persistente:** [`layout.component.html`](src/app/layout/layout.component.html) mantém cabeçalho, conteúdo e rodapé; o `<router-outlet>` troca apenas a página ativa.
+- **Navegação principal:** links para **Como funciona** (âncora na página inicial), **Cadastrar família** (`/cadastrar-familia`) e **Encontrar família** (`/match`). O item **Gerenciar (Demo)** (`/admin`) aparece apenas quando a conta administrativa está autenticada.
+- **Cabeçalho e sessão:** exibe o nome do sistema (**Famify**) e, quando não há sessão, o botão **Conectar Steam** (leva a `/login`). Com usuário logado, mostra avatar/iniciais, nome e opção **Sair**; em `/login` o topo é ocultado.
+- **Autenticação local:** a tela [`/login`](src/app/pages/auth/auth.ts) permite **entrar**, **criar conta** e **entrar com Steam** (simulado). A sessão ativa é persistida no navegador.
+- **Persistência local:** os dados são mantidos em `localStorage` pelos serviços Angular; **não há API nem banco externo** nesta etapa.
+- **Proteção de rota:** `/admin` é protegida por [`admin.guard.ts`](src/app/admin.guard.ts); usuários não administradores são redirecionados para `/inicio`.
+- **Tema/recursos locais:** a interface utiliza estilos e ícones configurados no projeto (Angular Material/tema local), sem dependência obrigatória de fontes externas para funcionamento básico.
 
 ## Conta administrativa
 
-Use as seguintes credenciais somente nesta demonstração local:
+Use as credenciais abaixo **somente para exploração local/demonstração**:
 
-- E-mail: `adm@famify.com.br`
-- Senha: `123123`
+- **E-mail:** `adm@famify.com.br`
+- **Senha:** `123123`
 
-A conta é criada ou atualizada pelo `AuthService` durante o login administrativo. O link de gerenciamento só é exibido quando essa conta está ativa na sessão e a rota `/admin` possui proteção por guard. Outros usuários são redirecionados para a página inicial ao tentar acessar `/admin` diretamente.
+Como explorar:
+1. Acesse `/#/login`.
+2. Faça login com as credenciais acima.
+3. Após autenticar, o menu exibirá **Gerenciar (Demo)**; acesse `/#/admin`.
+4. A conta administrativa é criada/atualizada pelo [`AuthService`](src/app/services/auth.ts) no fluxo de login. Tentativas de acesso direto a `/#/admin` sem sessão administrativa redirecionam para `/#/inicio`.
 
 ## Serviços e persistência local
 
-Como o projeto não possui back-end nesta etapa, os dados são centralizados em serviços Angular e persistidos no `localStorage` do navegador.
+A aplicação usa serviços (`providedIn: 'root'`) com leitura/escrita em `localStorage` e, na maioria dos casos, estado reativo via `BehaviorSubject`/`Observable`:
 
-Cada entidade principal possui seu próprio serviço:
+| Serviço | Arquivo | Chave(s) no `localStorage` | Responsabilidade principal |
+|---|---|---|---|
+| `UsuarioService` | [`usuario.service.ts`](src/app/services/usuario.service.ts) | `famify_usuarios` | CRUD de usuários (`UsuarioFamify`), buscas por id/e-mail, emissão de `usuarios$` |
+| `AuthService` | [`auth.ts`](src/app/services/auth.ts) | `famify_sessao_ativa` (+ uso de usuários) | Cadastro, login, login simulado Steam, logout, sessão atual (`usuarioAtual$`) e verificação de admin |
+| `FamiliaService` | [`familia.service.ts`](src/app/services/familia.service.ts) | `famify_familias` | CRUD de famílias (`FamiliaSteam`), dados iniciais, validação de limite (`regras-negocio`), `familias$` |
+| `JogoService` | [`jogo.service.ts`](src/app/services/jogo.service.ts) | `famify_jogos` | CRUD de jogos (`Jogo`), catálogo inicial, `jogos$` |
+| `GeneroService` | [`genero.service.ts`](src/app/services/genero.service.ts) | `famify_generos` | CRUD de gêneros (lista de strings), gêneros iniciais |
+| `SolicitacaoService` | [`solicitacao.service.ts`](src/app/services/solicitacao.service.ts) | `famify_solicitacoes` | Criação/cancelamento/atualização de solicitações, aprovação/rejeição, integração com famílias e regras |
 
-- `UsuarioService`: cadastro, consulta, edição e exclusão de usuários.
-- `FamiliaService`: cadastro, consulta, edição e exclusão de famílias.
-- `JogoService`: cadastro, consulta, edição e exclusão de jogos.
-- `GeneroService`: cadastro, consulta, edição e exclusão de gêneros.
-- `SolicitacaoService`: envio, consulta, aprovação, rejeição e cancelamento de solicitações.
-- `AuthService`: sessão ativa e autenticação local simulada.
+Regras de negócio: [`regras-negocio.ts`](src/app/services/regras-negocio.ts) (`validarLimiteFamilia`, `podeSolicitarEntrada`, `calcularPorcentagemOcupacao`).
 
-Os componentes não devem acessar o `localStorage` diretamente. Eles chamam os serviços correspondentes, que validam as operações e atualizam os dados observáveis utilizados pelas telas. Os serviços também centralizam dados iniciais para que o projeto já seja executável sem API.
-
-As informações ficam disponíveis apenas no navegador utilizado pelo usuário. Por isso, login, usuários, famílias, jogos, gêneros e solicitações não são compartilhados entre dispositivos ou navegadores diferentes.
+> Dica para exploração: limpe as chaves `famify_*` no `localStorage` do navegador para restaurar o estado inicial semeado pelos serviços.
 
 ## Área administrativa
 
-A rota `/admin` permite executar o CRUD completo das entidades principais sem back-end:
+Rota: `/#/admin` (protegida por [`admin.guard.ts`](src/app/admin.guard.ts)). Implementação: [`admin.component.ts`](src/app/pages/admin/admin.component.ts).
 
-- Usuários: cadastrar, consultar, editar e excluir.
-- Famílias: cadastrar, consultar, editar e excluir.
-- Jogos: cadastrar, consultar, editar e excluir.
-- Gêneros: cadastrar, consultar e excluir.
-- Solicitações: consultar, aprovar, rejeitar e excluir.
+Funcionalidades disponíveis para exploração (CRUD local e gestão):
+- **Usuários:** listar, criar, editar e excluir usuários (campos como nome, e-mail, senha, Steam ID, jogos importados/desejados).
+- **Famílias:** listar, criar, editar e excluir famílias (nome, descrição, limites/membros, gêneros, etc.), com validações de consistência/limite.
+- **Jogos:** listar, criar, editar e excluir jogos do catálogo.
+- **Gêneros:** cadastrar e remover gêneros (o gênero "Todos" não deve ser removido).
+- **Solicitações:** visualizar solicitações e alterar status (**aprovar/rejeitar**) ou excluir; a aprovação atualiza membros/vagas da família conforme regras.
 
-Os formulários exibem estados fictícios de carregamento, mensagens de sucesso e mensagens de erro. A aprovação de solicitação atualiza a ocupação da família e respeita o limite máximo de seis membros.
+Mensagens de sucesso/erro e recarregamento dos dados locais ajudam a validar o comportamento de cada operação.
 
 ## Dashboard e fluxo principal
 
-Os indicadores da página inicial são calculados a partir dos dados cadastrados nos serviços locais. A página permite pesquisar famílias, aplicar filtros por gênero, consultar vagas e enviar ou cancelar solicitações.
+### Início (`/#/inicio`) — [`inicio.component.ts`](src/app/pages/inicio/inicio.component.ts)
+- Exibe **métricas** calculadas a partir dos dados locais (ex.: famílias ativas, jogos disponíveis, usuários, solicitações locais).
+- Lista **jogos mais procurados** do catálogo.
+- Permite buscar/filtrar e navegar para **Encontrar família** (`/match`), inclusive com termo de busca.
+
+### Cadastrar família (`/#/cadastrar-familia`) — [`cadastrar-familia.component.ts`](src/app/pages/cadastrar-familia/cadastrar-familia.component.ts)
+- Permite cadastrar no Famify uma família Steam da qual o usuário já participa, informando dados como nome, descrição, membros atuais, limite de membros, total de jogos e gêneros.
+- Requer conta autenticada para concluir o cadastro; caso não haja sessão, a tela orienta o acesso via `/login`.
+- Ao salvar, utiliza `FamiliaService.criar` (com validações de limite/regras) e a família passa a ficar disponível para descoberta em **Encontrar família** quando houver vagas.
+
+### Encontrar família (`/#/match`) — [`match.component.ts`](src/app/pages/match/match.component.ts)
+- Lista famílias com **vagas disponíveis** e aplica filtros por **gênero** e **texto** (nome, descrição, gêneros, jogos em destaque).
+- Mostra informações como ocupação, membros, total de jogos e destaques.
+- **Solicitar/Cancelar entrada:** requer usuário autenticado; cria ou cancela solicitação pendente conforme o estado. Validações de negócio (vagas, limite, duplicidade pendente) são aplicadas pelo serviço/regras.
+
+### Acesso (`/#/login`) — [`auth.ts`](src/app/pages/auth/auth.ts)
+- Alterna entre **entrar** e **criar conta**.
+- **Login:** valida credenciais contra usuários salvos (ou fluxo especial do admin).
+- **Cadastro:** cria usuário local e inicia sessão, redirecionando para `/match`.
+- **Entrar com Steam:** fluxo simulado que cria/usa um usuário de demonstração e inicia sessão.
 
 ## Recursos simulados e testes
 
-Os seguintes recursos são representações locais e não devem ser considerados integração real:
+### Recursos simulados / dados locais
+- **Sem backend:** todas as operações são locais (`localStorage`).
+- **Dados iniciais (seed):** `FamiliaService`, `JogoService` e `GeneroService` populam valores padrão quando não há dados salvos.
+- **Login Steam simulado:** `AuthService.loginComSteam()` autentica um usuário de demonstração local.
+- **Aprovação de solicitação:** ao aprovar, o sistema atualiza a contagem de membros da família e recalcula vagas conforme as regras implementadas.
 
-- Login e sessão local, sem segurança server-side.
-- OAuth da Steam e validação do Steam ID.
-- Dados compartilhados entre usuários ou dispositivos.
-- Comunicação com uma API externa.
-
-As regras críticas estão cobertas por testes em `src/app/services/regras-negocio.spec.ts`, incluindo limite de membros, vagas, duplicidade de solicitações e cálculo de ocupação.
-
-Execute os testes com:
-
-```bash
-npm test
-```
-
-## Arquivos para estudar
-
-- `src/app/app.module.ts`: módulo principal.
-- `src/app/app-routing.module.ts`: rotas principais e lazy loading.
-- `src/app/layout/layout.module.ts`: importações do Material necessárias ao layout.
-- `src/app/layout/layout.component.ts`: nome do sistema, usuário e tamanho da tela.
-- `src/app/layout/layout.component.html`: menu, cabeçalho e router-outlet.
-- `src/app/layout/layout.component.css`: estilos da estrutura.
-- `src/app/pages/inicio/`: módulo e página inicial.
-- `src/app/pages/projetos/`: módulo e segunda página.
-- `src/styles.css`: estilos compartilhados.
-- `angular.json`: tema pronto azure-blue do Material.
-
-## Como personalizar
-
-1. Em `layout.component.ts`, altere `nomeSistema` e `usuario`. Ajuste também as iniciais do avatar no HTML; os dados são apenas de demonstração.
-2. Edite o título em `src/index.html`.
-3. Troque o texto dos itens no menu e mantenha cada `routerLink` coerente com as rotas.
-4. Altere o HTML das duas páginas conforme o domínio da equipe.
-5. Ajuste as cores no CSS do layout, preservando contraste e legibilidade.
-
-## Adicionar uma terceira página
-
-Use a pasta `pages/projetos` como referência para criar `pages/clientes`:
-
-1. Crie `ClientesComponent`, com `standalone: false`, e seu HTML.
-2. Crie `ClientesModule`, declare nele o componente e importe `CommonModule`, os módulos Material utilizados e `RouterModule.forChild([{ path: '', component: ClientesComponent }])`.
-3. Adicione em `app-routing.module.ts`, ANTES da rota `**`:
-
-```typescript
-{ path: 'clientes', loadChildren: () =>
-    import('./pages/clientes/clientes.module').then(m => m.ClientesModule) }
-```
-
-4. Adicione um link no menu com `routerLink="/clientes"` e `routerLinkActive="item-ativo"`, seguindo os links existentes.
-
-Não coloque `RouterModule.forRoot` nos módulos de páginas. Não declare o mesmo componente em dois módulos. Se incluir `[(ngModel)]`, importe `FormsModule` no módulo da página.
-
-## Atividade da equipe
-
-Adaptem o modelo ao software do grupo. Mantenham menu lateral, topo e navegação. Substituam a segunda página por uma tela de cadastro real do seu projeto usando Angular Material, conforme o guia de instalação trabalhado em aula.
-
-## Verificação
-
-```bash
-npm run build
-```
-
-Teste os dois links, o botão de recolher o menu, o acesso direto a `/projetos`, a atualização do navegador nessa rota e a navegação em tela pequena. O build de produção fica em `dist/modelo-projeto-integrador/browser`.
-
-Ao hospedar como SPA, o servidor precisa direcionar rotas desconhecidas para index.html. O servidor de desenvolvimento já faz esse tratamento.
-
-## Referências
-
-- https://angular.dev/guide/ngmodules/overview
-- https://angular.dev/guide/routing
-- https://material.angular.dev/components/sidenav/overview
-- https://material.angular.dev/components/toolbar/overview
+### Testes
+- Arquivos de teste presentes: [`auth.spec.ts`](src/app/services/auth.spec.ts) e [`regras-negocio.spec.ts`](src/app/services/regras-negocio.spec.ts).
+- Executar:
+  ```bash
+  npm test
+  ```
+- O script está configurado como `ng test --watch=false` em [`package.json`](package.json). Caso o ambiente exija configuração adicional do runner, verifique as dependências e a configuração do Angular no projeto antes da execução.
